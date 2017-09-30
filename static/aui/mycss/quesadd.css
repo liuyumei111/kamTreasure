@@ -1,0 +1,264 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+input[type="button"], input[type="submit"], input[type="reset"],button{
+
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+textarea {  -webkit-appearance: none;}
+.checkbox{
+    width: 17rem;
+    margin: 0 auto 10px;
+    /* height: 1rem; */
+    font-size: 12px;
+}
+.checkbox-input{
+    border: none;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+    margin-bottom: 0.2rem;
+
+}
+.checkbox-text{
+    position: relative;
+    top: -3px;
+}
+.ask{
+	font-size:12px;
+    text-align: center;
+    color: #ff0000;
+    padding: 5px;
+}
+.ask-a{
+    color: #1a1a1a;
+    text-align: left;
+    font-size: 12px;
+    width: 18rem;
+    margin: 0 auto;
+    padding: 5px;
+    box-sizing: border-box;
+
+}
+.content{
+    background: #f7f7f7;
+    width: 100%;
+    /*height: 100%;*/
+}
+.container {
+    margin: 0 auto;
+    width: 18rem;
+    /* height: 9rem; */
+    overflow: auto;
+    /* clear: both; */
+    padding: 10px 0;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+.z_photo {
+    width: 18rem;
+    /* height: 8rem !important; */
+    /* clear: both; */
+    margin: 0 auto;
+    /* border: 1px solid #555; */
+    background: #fafafa;
+}
+.clearfix:after {
+    content: '';
+    display: block;
+    clear: none;
+    height: 0;
+}
+.z_file {
+    width: 4rem;
+    height: 4rem;
+    background: url(../myimages/z_add.png) no-repeat;
+    background-size: cover;
+    float: left;
+    margin: 0.2rem;
+    position: relative;
+}
+.wzts {
+    position: absolute;
+    font-size: 12px;
+    bottom: 10%;
+    left: 50%;
+    margin-left: -24px;
+    color: #b3b3b3;
+}
+body{
+    background-color: #f7f7f7;
+}
+.button{
+    width: 30%;
+    height: 30px;
+    background: #931a02;
+    border: none;
+    border-radius: 5px;
+    margin: 0 auto;
+    color: #fff;
+    display: block;
+    text-align: center;
+    line-height: 30px;
+    /* padding: 5px 10px; */
+    font-size: 14px;
+}
+#loading{
+    position: fixed;
+    height: 100%;
+    opacity: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1999;
+}
+#loading img{
+    position: absolute;
+    left: 50%;
+    top:50%;
+    margin-top: -21px;
+    margin-left: -21px;
+}
+.wjxx {
+    font-size: 14px;
+    margin-left: 2rem;
+    margin-top: .5rem;
+    color: #7b7b7b;
+}
+.wjxx p {
+    font-size: 14px;
+}
+.delete {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: -5px;
+    top: -11px;
+    background: url(../myimages/gb.png) no-repeat center;
+    background-size: 23px;
+}
+.expert{
+    width: 100%;
+    /*height: 3rem;*/
+    background: #fff;
+}
+.expert-left{
+    width: 13rem;
+    /* background: red; */
+    float: left;
+    margin: 10px 0 0 10px;
+    position: relative;
+}
+.expert-right{
+    width: 4.5rem;
+    /* height: 4.5rem; */
+    /* background: red; */
+    float: right;
+    margin: 10px 10px 0 0;
+
+}
+.Photo{
+    width: 3rem;
+    height: 3rem;
+    display: inline-block;
+    float: left;
+    position: relative;
+    margin-right: 5px;
+    overflow: hidden;
+    border-radius: 3rem;
+   }
+.Photo>img{
+   width: 100%;
+   height: 100%;
+   }
+.text-chuan{
+    color: #040404;
+    font-size: 14px;
+    display: inline-block;
+    margin: 5px 0 2.5px 0;
+}
+.text-ren{
+    font-size: 12px;
+    color: #040404;
+    /* width: 5rem; */
+    display: block;
+    margin-left: 1.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.img-v{
+    width: 16px;
+    height: 16px;
+    background: url(../myimages/v.png)no-repeat;
+    background-size: 16px;
+    display: inline-block;
+    position: absolute;
+    left: 2rem;
+    bottom: 0;
+    z-index: 99;
+}
+.Read{
+    width: 3rem;
+    height: 20px;
+    background: #931a02;
+    display: block;
+    text-align: center;
+    line-height: 20px;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 0.1rem;
+    margin-bottom: 0.2rem;
+    float: right;
+}
+.Read-text{
+    font-size: 14px;
+    float: right;
+}
+.detail-text {
+    width: 18rem;
+    margin: .2rem auto;
+    overflow: hidden;
+}
+textarea {
+    width: 100%;
+    border: none;
+    font-size: 12px;
+    outline: none;
+    background: #fff;
+    resize: none;
+    padding: 10px;
+    height: 6rem;
+}
+.expert-text{
+    /*width: 100%;
+    height:1rem;*/
+	font-size:12px;
+    padding:0 0.2rem 0.2rem 0.2rem;
+    overflow: hidden;
+}
+.expert-lr{
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+.money{
+	font-size:12px;
+    margin: 0.6rem 0 0 0.1rem;
+}
+
+.clearfix {
+	zoom: 1;
+} 
+
+.clearfix:before, .clearfix:after {
+	clear: both;
+	content: "\0020";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}

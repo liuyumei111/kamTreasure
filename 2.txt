@@ -1,0 +1,2 @@
+ http://lihaimingoray.imwork.net/DiscuzServer
+http://192.168.199.148:8080/DiscuzServer

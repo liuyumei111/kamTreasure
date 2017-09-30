@@ -1,0 +1,30 @@
+.tuijian{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../myimages/icon-question.png")no-repeat;
+    background-size: cover;
+}
+.xuanshagn{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../myimages/icon-offer.png")no-repeat;
+    background-size: cover;
+}
+.zhuanjia{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../myimages/icon-expert.png")no-repeat;
+    background-size: cover;}
+.wode{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../myimages/icon-member.png")no-repeat;
+    background-size: cover;
+}
+.font-color{
+    color: #fff;
+}

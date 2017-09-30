@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>余额</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0,
+          maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="../../static/aui/mycss/aui.css">
+    <style>
+        b{
+            font-weight: normal;
+
+        }
+        .balance-box{
+            background: #fafafa;
+        }
+        .balance-account{
+            width: 100%;
+            height: 10rem;
+            background: #c73114;
+        }
+        .withdrawals{
+            background: #c73114;
+            width: 100%;
+            height: 45px;
+            margin-top: 0.5rem;
+            font-size: 18px;
+            color: #fff;
+            line-height: 45px;
+            /* padding-left: 1.2rem; */
+            text-align: center;
+            margin: 10px auto;
+        }
+        .withdrawals>span{
+          color: #ffffff;
+        }
+        .balance-detailed{
+            /*background: #fff;*/
+            height: 2rem;
+            line-height: 2rem;
+            color: #c1c1c1;
+            padding-left: 1rem;
+
+        }
+        .flow{
+            width: 100%;
+        }
+        .flow>li{
+            height: 2.5rem;
+            background: #fff;
+            line-height: 2.5rem;
+
+        }
+        .ul-left{
+            width: 50%;
+            float: left;
+            margin-left: 3.5rem;
+            position: relative;
+        }
+        .ul-right{
+            width: 20%;
+            float: right;
+            color: #931a02;
+        }
+        .ul-left>i{
+            position: absolute;
+            top:0;
+            left: -2rem;
+            width: 0.1rem;
+            height: 2.5rem;
+            background: red;
+        }
+        .ul-left>s{
+            position: absolute;
+            top:0.8rem;
+            left: -2.25rem;
+            width: 0.65rem;
+            height: 0.65rem;
+            border-radius: 50%;
+            background: red;
+        }
+        .ul-left>i,s,b,span{
+            color: #c1c1c1;
+
+        }
+        .ul-left>b{
+            padding-left: 0.5rem;
+        }
+        .balance-account>.balance1 {
+            padding: 1rem 0 0 1rem;
+            color: #f1f1f1;
+        }
+        .balance-account>.balance2{
+            font-size: 50px;
+            padding: 1.2rem 0 0 1rem;
+            color: #fafafa;
+
+        }
+        #loading{
+            position: fixed;
+            height: 100%;
+            opacity: 1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            z-index: 1999;
+        }
+        #loading img{
+            position: absolute;
+            left: 50%;
+            top:50%;
+            margin-top: -21px;
+            margin-left: -21px;
+        }
+    </style>
+</head>
+<body>
+<div id="loading">
+    <img src="../../static/aui/myimages/kbloading.gif">
+</div>
+<section class="balance-box">
+    <!--账户余额-->
+    <section class="balance-account">
+        <section class="balance1">账户余额</section>
+        <section class="balance2" id="balance">0.00</section>
+    </section>
+    <!--提现-->
+    <section class="withdrawals">
+        <span>提现</span>
+    </section>
+    <!--交易明细-->
+    <section class="balance-detailed">交易明细</section>
+    <!--具体流水账-->
+    <ul class="flow">
+        <!--<li>-->
+            <!--<section class="ul-left">-->
+                <!--<i></i>-->
+                <!--<s></s>-->
+                <!--<span>2017-5-06</span>-->
+                <!--<b>12:06</b>-->
+            <!--</section>-->
+            <!--<section class="ul-right">+50</section>-->
+        <!--</li>-->
+    </ul>
+</section>
+<script src="../../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../../static/aui/script/aui-scroll.js"></script>
+<script>
+    //var url="http://192.168.199.148:8080/DiscuzServer";
+    var url=" http://j.ccyjs.cn/DiscuzServer";
+    //获取页面传递参数
+    let urs=window.location.search;
+    let strs=urs.substring(1);
+    let silp=strs.split('&');
+    let res={};
+    for (let i=0;i<silp.length;i++){
+        res[silp[i].split("=")[0]]=silp[i].split("=")[1];
+    }
+    var openId=res.openId;
+    var rows="";
+    console.log(openId);
+    $.ajax({
+        type: "GET",
+        url: url + "/wx/web/member/getmember",
+        dataType: 'json',
+        async: true,
+        contentType: "application/json",
+        data: {openId: openId, order: 'asc'},
+        success: function (ro) {
+            //console.log(ro)
+            $("#balance").html(ro.datas.balance)
+            $("#loading").hide()
+        },
+        error : function(err) {
+            alert(err)
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: url + "/wx/web/apporder/getmyorderlist",
+        dataType: 'json',
+        async: true,
+        contentType: "application/json",
+        data: {openId: openId},
+        success: function (ro) {
+            console.log(ro)
+            $.each(ro.datas,function (el,index) {
+                //console.log(index.orderType)
+                if(index.orderType==0){
+                    rows+=`<li><section class="ul-left"><i></i><s></s><span>`+index.createTime+`</span></section>
+                                <section class="ul-right">-`+index.fee+`</section>
+                            </li>`
+                }else if(index.orderType==1){
+                    rows+=`<li><section class="ul-left"><i></i><s></s><span>`+index.createTime+`</span></section>
+                                <section class="ul-right">-`+index.fee+`</section>
+                            </li>`
+                }else if(index.orderType==2){
+                    if(openId==index.openId){
+                        rows+=`<li><section class="ul-left"><i></i><s></s><span>`+index.createTime+`</span></section>
+                                <section class="ul-right">-`+index.fee+`</section>
+                            </li>`
+                    }else  if(openId==index.gainopenId){
+                        rows+=`<li><section class="ul-left"><i></i><s></s><span>`+index.createTime+`</span></section>
+                                <section class="ul-right">+`+index.fee+`</section>
+                            </li>`
+                    }
+
+                }else if(index.orderType==3){
+                    rows+=`<li><section class="ul-left"><i></i><s></s><span>`+index.createTime+`</span></section>
+                                <section class="ul-right">-`+index.fee+`</section>
+                            </li>`
+                }
+
+            })
+
+            $('.flow').append(rows)
+
+        },
+        error : function(err) {
+            alert(err)
+        }
+    });
+    function sjgsh(old) {
+        var oldTime = old; //得到毫秒数
+        var newTime = new Date(oldTime); //就得到普通的时间了
+        console.log(newTime)
+    }
+    sjgsh(1500552693000)
+    $(".withdrawals").on('click',function () {
+        window.location.href="balancedesc.html?openId="+openId
+    })
+    //	到底加载数据
+//    var scroll = new auiScroll({
+//        //listen:true, //是否监听滚动高度，开启后将实时返回滚动高度
+//        distance:100 //判断到达底部的距离，isToBottom为true
+//    },function(ret){
+//        if(ret.isToBottom==true){
+//            var str=`<li>
+//            <section class="ul-left">
+//                <i></i>
+//                <s></s>
+//                <span>2017-5-06</span>
+//                <b>12:06</b>
+//            </section>
+//            <section class="ul-right">+50</section>
+//        </li>`
+//            $('.flow').append(str)
+//        }
+//    });
+
+</script>
+</body>
+</html>

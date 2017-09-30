@@ -1,0 +1,166 @@
+.user-info {
+    background-color: #ffffff;
+    padding: 0.75rem 0;
+}
+img.avatar {
+    display: block;
+    margin: 0 auto;
+    width: 20%;
+}
+.aui-list .aui-list-header {
+    background-color: #ffffff;
+    line-height: 1.2rem;
+}
+.aui-list .aui-list-item {
+    background-color: #f8f6ef;
+}
+.aui-bar-tab-item>.bar-tab-label-wen{
+    /*width: 3em;*/
+    height: 2rem;
+    background: #931a02;
+    border-radius: 0.3rem;
+    text-align: center;
+    line-height: 2rem;
+    color: #fff;
+    font-size: 22px;
+}
+.banner{
+    width: 100%;
+    height: 5rem;
+    margin-top: 0.5rem;
+    position: relative;
+}
+.banner>img{
+    width: 100%;
+    height: 100%;
+}
+.banner>.span1{
+    color: #fff;
+    position: absolute;
+    top: 1.5rem;
+    right: 3.5rem;
+    font-size: 1rem;
+}
+.banner>.span2{
+    color: #fff;
+    position: absolute;
+    top: 1.5rem;
+    right: 7.5rem;
+    font-size: 1rem;
+}
+.banner>i{
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 1.5rem;
+    left: 4rem;
+    background: url("../myimages/icon-search.png")no-repeat;
+    background-size: contain;
+}
+.zj-detail{
+    width: 100%;
+    background: #fff;
+}
+.zj-detail>li{
+    width: 100%;
+    height: 5rem;
+    background: #fff;
+    line-height: 5rem;
+}
+.zj-detail>li>.zj-icon{
+    width: 20%;
+    height: 3rem;
+    padding: 0.5rem 0 0 0.8rem;
+    box-sizing: content-box;
+    float: left;
+}
+.zj-detail>li>.zj-text {
+    float: right;
+    width: 80%;
+    height: 100%;
+    background: chartreuse;
+}
+.text-overflow-fag{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+}
+.user-header-img{
+    width: 3.5rem;
+    float: left;
+    margin-right: 0.5rem;
+    /* background: red; */
+    height: 3.5rem;
+    border-radius: 50%;
+    /*border: 1px solid red;*/
+    position: relative;
+}
+.bottom-border{
+    border-bottom: 1px solid #eee;
+}
+.content-box{
+    box-sizing:content-box;
+    height: 3.5rem;
+}
+.user-weibo{
+    width: 0.8rem;
+    height: 0.8rem;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: url("../myimages/v.png")no-repeat;
+    background-size: contain;
+}
+.content-box1{
+    width: 100%;
+    height: 100%;
+    background: #f7f7f7;
+}
+.content-box1>ul{
+    background: #fff;
+    margin-top: 0.35rem;
+}
+.aa{
+    background: #931a02;
+    padding: 0.2rem;
+    border-radius: 0.3rem;
+    color: #fff;
+}
+.Hot{
+    background: #fff;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+.Hot>div{
+    margin: 0 auto;
+    width: 4rem;
+    height: 2rem;
+    line-height: 2rem;
+    color: #ff0000;
+    text-align: center;
+}
+.Hot>li{
+    border-top: 0.15rem solid #f7f7f7;
+}
+/*重置搜索框样式*/
+select{
+    width: 4rem;
+    padding-left: 0.5rem;
+    font-size: 14px;
+    color: #bdbdbd;
+}
+.margin-no{
+    margin: 0;
+    padding: 0;
+}
+.position1{
+    position: relative;
+    top: 0.1px;
+    left: -1.1rem;
+    pointer-events:none;
+}
+

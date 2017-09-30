@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no,
+     initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <!--引入px单位转rem单位函数-->
+    <script src="../../static/aui/myscript/rem.js"></script>
+    <!--本页面css-->
+    <link rel="stylesheet" href="../../static/aui/mycss/quesadd.css">
+    <title>提问</title>
+</head>
+<body>
+<div id="loading">
+    <img src="../../static/aui/myimages/kbloading.gif">
+</div>
+<div class="content" id="pagefirst" style="padding-bottom:20px;">
+    <div class="expert clearfix">
+    <div class="expert-lr">
+        <div class="expert-left clearfix">
+            <i class="img-v"></i>
+            <div class="Photo">
+                <img src="" id="exptx">
+            </div>
+            <span class="text-chuan"></span>
+            <br>
+            <span class="text-ren"></span></div>
+        <div class="expert-right">
+            <b class="Read">订阅</b>
+            <b class="Read-text"><span id="gznum"></span>人订阅</b>
+        </div>
+    </div>
+</div>
+    <p class="ask">*向<span id="name1"></span>提问,等TA语音回答;超48小时,将支付路径全额退款</p><div class="detail-text">
+        <div class="detail-text">
+            <textarea placeholder="这里输入您的问题,200字以内" maxlength="200" id="textareaid" name="quesTitle"></textarea>
+        </div>
+        <p class="ask-a">上传图片或是视频可以让回答者进一步回答您的问题</p>
+    <div class="container">
+        <div class="z_photo clearfix" id="photolist">
+        </div>
+        <div class="z_file" id="add">
+            <span class="wzts">上传图片</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="z_file" id="shipin">
+            <span class="wzts">选择视频</span>
+        </div>
+        <div class="wjxx">
+            <p id="name"></p>
+            <p id="size"></p>
+        </div>
+        <input id="img_input" type="file" style="display: none" onchange="xx()">
+    </div>
+    </div><div class="checkbox">
+        <input type="radio" name="isPublic" class="checkbox-input" checked="checked" id="checkboxid1" value="0">
+        <label class="checkbox-text" for="checkboxid1">公开提问，答案每次被人偷学一次，你从中分成￥<span id="pric"></span></label>
+        <br>
+        <input type="radio" name="isPublic" class="checkbox-input" id="checkboxid2" value="1"><label class="checkbox-text" for="checkboxid2"> 私密提问，唯你能见专属答案</label>
+    </div>
+    <button class="button"  onclick="submit()" id="submit">￥<span id="quesfee"></span>提问</button>
+<!--<p class="money">共回答20个问题，一共收入3000元</p>-->
+
+</div>
+<input id="input" hidden value="10">
+</body>
+<script type="text/javascript" src="../../static/aui/script/api.js" ></script>
+<script type="text/javascript" src="../../static/aui/script/aui-toast.js" ></script>
+<script src="../../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<script src="../../static/aui/myscript/sha1.js"></script>
+<script src="../../static/aui/myscript/layer.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+
+<script type="text/javascript">
+    var url=" http://j.ccyjs.cn/DiscuzServer";
+    var openIdv="oFVk3wGgYCrYbdKjdyRbhxDbqwbM";
+    //var url="http://192.168.199.199:8080/DiscuzServer";
+    //var openIdv="oCmyxw1WGsfgw0xGQpHXasTRGX6E";
+    var expertIdv="28";
+
+    //var url=" ${path}";
+    //var openIdv = "${openId}";
+    //var expertIdv = "${expertid}";
+    //专家opendID
+    var expopenIdv="";
+    //专家所得费 expertGainFee = questionFee * feeRate  都是百位进率
+    var feeRatev = 0;
+    //发问者的通过开放问题 他人偷听单次所得费  listenGainFeev = listenFee * listenRate  都是百位进率
+    var listenGainFeev = 0;
+    //专家问题偷听费listenFeev  = basicFee
+    var listenFeev = 0;
+    // 偷听费率
+    var listenRate = 0;
+    var questionFee=0;
+
+    apiready = function(){
+        api.parseTapmode();
+    }
+
+
+
+    var images = {
+        localId: [],
+        //serverId: ["6QdiS6-dTgHnql78ubypwAMJBFkCAuPCjwFlo9gcWZBpt0gO2_s5Cv35npqUbEhx","QwTnJYu9JP3UCHHCx-otKggOz1__lolKnAIEWzac9NUa6xWHeTwsCnzcgdxJIkAc","6QdiS6-dTgHnql78ubypwAMJBFkCAuPCjwFlo9gcWZBpt0gO2_s5Cv35npqUbEhx"],
+        serverId:[]
+    };
+    ioslocId=[];
+    var rows="";
+    var appid="";
+    var jsapi_ticket="";
+    var nowtime=Math.floor(new Date().getTime()/1000);
+    var ticketprams={
+        openId:openIdv,
+    };
+
+    $.ajax({
+        type : "GET",
+        url : url+"/wx/web/main/getticket",
+        dataType : 'json',
+        async: false,
+        contentType : "application/json",
+        data : ticketprams,
+        success : function(ro) {
+            if(ro.code == 200){
+                console.log(ro)
+                appid=ro.datas.appid;
+                jsapi_ticket = ro.datas.jsapi_ticket;
+            }
+        },
+        error : function(err) {
+            alert(err.message);
+        }
+    });
+
+    //随机字符串
+    var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    function generateMixed(n) {
+        var res = "";
+        for(var i = 0; i < n ; i ++) {
+            var id = Math.ceil(Math.random()*35);
+            res += chars[id];
+        }
+        return res;
+    };
+    var noncestr=generateMixed(17);
+    //生成签名
+    var shastring="jsapi_ticket="+jsapi_ticket+"&noncestr="+noncestr+"&timestamp="+nowtime+"&url="+window.location.href;
+    //alert(shastring);
+
+    var signa=hex_sha1(shastring);
+    console.log(appid);
+    console.log(jsapi_ticket);
+    console.log(nowtime);
+    console.log(noncestr);
+    console.log(signa);
+    $(function(){
+        //初始化接口
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: appid, // 必填，公众号的唯一标识
+            timestamp: nowtime, // 必填，生成签名的时间戳
+            nonceStr: noncestr, // 必填，生成签名的随机串
+            signature: signa,// 必填，签名，见附录1
+            jsApiList : [ 'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onRecordEnd',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard',
+                'getLocalImgData'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+    })
+
+
+    wx.ready(function () {
+        //调用微信选择图片接口
+        $("#add").on('click',function () {
+            alert("1111")
+            var imglen=images.localId.length;
+            if(imglen==8){
+                alert("最多只能上传8张照片哦");
+                retrun
+            }
+            wx.chooseImage({
+                count: 8-imglen, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    $("#photolist").html("");
+                    $("#loadingToast").show();
+
+                    rows="";
+                    images.localId =images.localId.concat(res.localIds); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    //base64(images.localId)
+                    //alert(images.localId)
+                    uploadimg(res.localIds);
+                    if (window.__wxjs_is_wkwebview) {
+
+                        for(var i=0;i<images.localId.length;i++){
+
+                            $("#photolist").html("");
+                            wx.getLocalImgData({
+                                localId:res.localIds[i], // 图片的localID
+                                success: function (res) {
+
+                                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+
+                                    localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
+
+                                    ioslocId.push(localData)
+
+                                    rows="";
+                                    for(var j=0;j<ioslocId.length;j++){
+
+                                        rows+=`<div class="z_file" style="background-image: url(`+ioslocId[j]+`)"><div class="delete" data-id="`+j+`"></div></div>`
+                                    }
+                                    $("#photolist").html(rows);
+
+                                },fail:function(res){
+                                    //alert("res");
+                                }
+                            });
+                        }
+
+                        //alert(rows)
+
+                    }
+                    else{
+                        $.each(images.localId,function (index,el) {
+                            rows+=`<div class="z_file" style="background-image: url(`+el+`)">
+													<div class="delete" data-id="`+index+`"></div>
+												</div>`
+                        });
+                        $("#photolist").html(rows);
+                    }
+
+
+
+
+
+
+                }
+            });
+
+
+        });
+    });
+
+
+    function uploadimg(localIds){
+
+        if (images.localId.length == 0) {
+            alert('请先使用 chooseImage 接口选择图片');
+            return;
+        }
+        var i = 0, length = localIds.length;
+        //images.serverId = [];
+        function upload() {
+            wx.uploadImage({
+                localId: localIds[i],
+                isShowProgressTips: 0, // 默认为1，显示进度提示
+                success: function (res) {
+                    i++;
+                    images.serverId.push(res.serverId);
+                    if (i < length) {
+                        upload();
+                    }
+                    $("#loadingToast").hide();
+                    console.log("serid"+images.serverId)
+                },
+                fail: function (res) {
+                    alert(JSON.stringify(res));
+                }
+            });
+        }
+        upload();
+    }
+    $("div").on("click",".delete",function () {
+        rows="";
+        let $this=$(this);
+        let id=$this.attr("data-id");
+        $("#photolist").find('div').remove();
+
+        if (window.__wxjs_is_wkwebview) {
+            images.serverId.splice(id,1);
+            images.localId.splice(id,1);
+            ioslocId.splice(id,1)
+            $.each(ioslocId,function (index,el) {
+                rows+=`<div class="z_file" style="background-image: url(`+el+`)">
+                                            <div class="delete" data-id="`+index+`"></div>
+                                        </div>`
+                //alert("serid"+images.serverId)
+            });
+        }else{
+            images.localId.splice(id,1);
+            images.serverId.splice(id,1);
+            $.each(images.localId,function (index,el) {
+                rows+=`<div class="z_file" style="background-image: url(`+el+`)">
+                                            <div class="delete" data-id="`+index+`"></div>
+                                        </div>`
+            });
+        }
+
+        $("#photolist").append(rows)
+    });
+    //上传微信服务器idlibiao
+    function update(idv) {
+        layer.open({
+            content: '图片正在上传中...不要关闭页面'
+            ,skin: 'msg'
+            ,time: 1000 //2秒后自动关闭
+        });
+        var arr={
+            openId:openIdv,
+            questionid:idv,
+            serverIds:images.serverId
+        };
+        $.ajax({
+            type : "POST",
+            url : url+"/wx/discuz/muti/savequestionimagedata",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data :JSON.stringify(arr),
+            success : function(ro) {
+                if($("#name").html()==""){
+                    window.location.href="../my/question.html?&openid"+openIdv
+                }else {
+                    upvideo();
+                }
+
+            },
+            error : function(err) {
+                alert(err.message);
+            }
+        });
+
+    }
+    $("#shipin").on('click',function() {
+
+        let quesval=$("#textareaid").val();
+        if(quesval==""){
+            layer.open({
+                content: '问题描述不能为空'
+                ,skin: 'msg'
+                ,time: 1 //2秒后自动关闭
+            });
+            $("html,body").scrollTop(0);
+            return;
+        }
+
+        $("#img_input").click();
+
+    })
+    function xx() {
+        var file_data = $("#img_input").prop("files")[0];
+        $("#name").html(file_data.name);
+        $("#size").html(file_data.size);
+    }
+    function upvideo() {
+        layer.open({
+            content: '视频正在上传中...不要关闭页面'
+            ,skin: 'msg'
+            ,time: 1000 //2秒后自动关闭
+        });
+        // 创建
+        var form_data = new FormData();
+
+        // 获取文件
+        var file_data = $("#img_input").prop("files")[0];
+
+        // 把所以表单信息
+        form_data.append("openId",openIdv);
+        form_data.append("questionid",$("#input").val());
+        form_data.append("video", file_data);
+        //console.log(file_data)
+
+        $.ajax({
+            type: "POST",
+            url: url+'/wx/discuz/muti/savequestionvideodata',
+            dataType : "json",
+            processData: false,  // 注意：让jQuery不要处理数据
+            contentType: false,  // 注意：让jQuery不要设置contentType
+            data: form_data,
+            async:false
+        }).success(function(msg) {
+            console.log("chenggong");
+            window.location.href="../my/question.html?&openid"+openIdv
+        }).fail(function(msg) {
+            console.log(msg);
+        });
+    }
+    function submit() {
+        let quesval=$("#textareaid").val();
+        let ispulic=$('input[name="isPublic"]:checked ').val();
+        if(quesval==""){
+            layer.open({
+                content: '问题描述不能为空'
+                ,skin: 'msg'
+                ,time: 1 //2秒后自动关闭
+            });
+            $("html,body").scrollTop(0);
+            return;
+        }else if(images.serverId=="0"||$("#name").html()==""){
+            layer.open({
+                content: '图片或视频不能为空哦'
+                ,skin: 'msg'
+                ,time: 1 //2秒后自动关闭
+            });
+            return false;
+        }
+        $("#submit").attr("disabled","true");
+        var parms={
+            memOpenId:openIdv,
+            expOpenId:expopenIdv,
+            quesTitle:quesval,
+            questionFee:questionFee,
+            listenFee:listenFeev*100,
+            expertGainFee:questionFee*feeRatev,
+            listenGainFee:listenGainFeev,
+            isPublic:ispulic
+        };
+        console.log(parms);
+        $.ajax({
+            type : "GET",
+            url : url+"/wx/web/question/saveexpertquestionforweb",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data :parms,
+            success : function(ro) {
+                console.log(ro.datas.id);
+                $("#input").val(ro.datas.id);
+                update(ro.datas.id);
+
+            },
+            error : function(err) {
+                alert(err.message);
+            }
+        });
+
+
+
+    }
+$(function(){
+	initexpertrate();
+	initpage();
+
+});
+    //取得偷听费率
+    function initexpertrate(){
+
+        var listenFee = 0;
+        var rateparams = {
+            openId:openIdv,
+            rateId:2
+        }
+        $.ajax({
+            type : "POST",
+            url : url+"/wx/web/feerate/getrate",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data : JSON.stringify(rateparams),
+            success : function(ro) {
+
+                if(ro.code == 200){
+                    //偷听基本费用
+                    listenFeev = ro.datas.listenFee;
+                    //专家费率
+                    feeRatev = ro.datas.feeRate/100;
+                    //偷听费率
+                    listenRatev = ro.datas.listenRate;
+                    //发问者单次偷听所得 expertGainFee
+                    listenGainFeev = listenFeev * listenRatev;
+                }else{
+                    alert(ro.code);
+                }
+            },
+            error : function(err) {
+                alert(err);
+            }
+        });
+
+        //return listenFee;
+
+
+    }
+
+    function initpage(){
+        var params = {
+            openId: openIdv,
+            expertId:expertIdv
+        }
+        $.ajax({
+            type : "POST",
+            url : url+"/wx/web/member/getexpert",
+            dataType : 'json',
+            async: true,
+            contentType : "application/json",
+            //data : "{expertId:"+expertIdv+"}",
+            data : JSON.stringify(params),
+            success : function(ro) {
+
+                if(ro.code == 200){
+                    $("#loading").hide();
+                    console.log(ro.datas);
+                    expopenIdv=ro.datas.openId;
+                    //alert("success");
+                    var arthStatusstr = "专家";
+                    if(ro.datas.memType == '1'){
+                        if(ro.datas.authStatus == 1){
+                            arthStatusstr = "认证专家";
+                        }else{
+                            arthStatusstr = "专家";
+                        }
+                    }
+                    $("#exptx").attr("src",ro.datas.picUrl);
+                    $(".text-ren").html(arthStatusstr);
+                    $(".text-chuan").html(ro.datas.name);
+                    $("#name1").html(ro.datas.name);
+                    $("#gznum").html(ro.datas.sumFollower);
+                    $("#pric").html(listenGainFeev/100);
+                    $("#quesfee").html(ro.datas.fee/100);
+                    questionFee=ro.datas.fee;
+                }
+            },
+            error : function(err) {
+                alert(err);
+            }
+        });
+
+    }
+</script>
+</html>

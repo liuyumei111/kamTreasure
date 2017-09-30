@@ -1,0 +1,512 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<meta name="format-detection"
+	content="telephone=no,email=no,date=no,address=no">
+<title>悬赏详情</title>
+<link rel="stylesheet" type="text/css" href="../../static/aui/mycss/aui.css" />
+<style type="text/css">
+    .user-info {
+        background-color: #ffffff;
+        padding: 0.75rem 0;
+    }
+    img.avatar {
+        display: block;
+        margin: 0 auto;
+        width: 20%;
+    }
+    .aui-list .aui-list-header {
+        background-color: #ffffff;
+        line-height: 1.2rem;
+    }
+    .aui-list .aui-list-item {
+        background-color: #f8f6ef;
+    }
+     .aui-bar-tab-item>.bar-tab-label-wen{
+        height: 2rem;
+        background: #931a02;
+        border-radius: 0.3rem;
+        text-align: center;
+        line-height: 2rem;
+        color: #fff;
+        font-size: 22px;
+    }
+.tuijian{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-question.png")no-repeat;
+    background-size: cover;
+}
+.xuanshagn{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-offer.png")no-repeat;
+    background-size: cover;
+}
+.zhuanjia{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-expert.png")no-repeat;
+    background-size: cover;
+}
+.wode{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-member.png")no-repeat;
+    background-size: cover;
+}
+    .box{
+        width: 100%;
+        padding: 0.6rem;
+        background: #f7f7f7;
+        margin-bottom: 1rem;
+        border-bottom: 1rem solid #fff;
+    }
+    .padding-left{
+           padding: 0 0 0 0.5rem;
+       }
+    .padding-bottom{
+        padding-bottom: 0.5rem;
+    }
+    .height-5{
+        height: 5rem;
+    }
+    .fr1{
+        float: right;
+        padding-right: 0.5rem;
+        color: #cacaca;
+    }
+    .voice{
+        position: relative;
+    }
+    .voice>i{
+        position: absolute;
+        top: 0px;
+        left: 40%;
+    }
+    .aui-text-info{
+        padding-top: 0.5rem;
+    }
+	.zfbtn{
+		width: 70px;
+		background-color: #931a02;
+		line-height: 24px;
+		text-align: center;
+		color: #ffffff;
+		font-size: 14px;
+		margin: 0 auto;
+		position: absolute;
+		right: .5rem;
+		border-radius: 5px;
+		z-index: 999;
+	}
+	.aui-card-list-user-name{
+		width: 78%;
+	}
+
+	.tk{
+		display: none;
+	}
+	.tk.tkzt{
+		display: block;
+	}
+</style>
+</head>
+<body>
+	<div class="aui-content box" id="pagefirst">
+    </div>
+
+	<footer class="aui-bar aui-bar-tab" id="footer">
+		<div class="aui-bar-tab-item aui-active" tapmode>
+            <!--<img class="tuijian" src="../../static/aui/myimages/icon-question.png"/>-->
+            <div class="icon tuijian"></div>
+			<div class="aui-bar-tab-label">推荐</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode>
+            <!--<img class="tuijian" src="../../static/aui/myimages/icon-offer.png"/>-->
+            <div class="icon xuanshagn"></div>
+			<div class="aui-bar-tab-label">悬赏</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode>
+			<div class="aui-bar-tab-label bar-tab-label-wen">问</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode>
+            <!--<img class="tuijian" src="../../static/aui/myimages/icon-expert.png"/>-->
+            <div class="icon zhuanjia"></div>
+			<div class="aui-bar-tab-label">专家</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode>
+            <!--<img class="tuijian" src="../../static/aui/myimages/icon-member.png"/>-->
+            <div class="icon wode"></div>
+			<div class="aui-bar-tab-label">我的</div>
+		</div>
+	</footer>
+
+</body>
+<script type="text/javascript" src="../../static/aui/script/aui-tab.js"></script>
+<script type="text/javascript" src="../../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+    //获取页面传递参数
+    //var url="http://192.168.199.148:8080/DiscuzServer";
+    var url=" http://j.ccyjs.cn/DiscuzServer";
+    //获取页面传递参数
+    let urs=window.location.search;
+    let strs=urs.substring(1);
+    let silp=strs.split('&');
+    let res={};
+    for (let i=0;i<silp.length;i++){
+        res[silp[i].split("=")[0]]=silp[i].split("=")[1];
+    }
+    var acc="";
+    var openIdv="oFVk3wAGHRGJQfrP0sh1t6dpytD0";//openid      res.openId
+
+    var questionIdv=252;//openid  res.questionId
+    //    var openIdv= '${openId}';
+    //    var questionIdv=${questionid};//问题id
+
+    let viewimgs=[];//图片数组
+
+    //加载回答列表
+    function addanswerlist(){
+
+        var subanstr = "";
+        var answerprams={
+            openId : openIdv,
+            questionid : questionIdv
+        };
+        $.ajax({
+            type : "GET",
+            url : url+"/wx/web/answer/getofferanswerviewlist",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data : answerprams,
+            success : function(ro) {
+                if(ro.code == 200){
+                    $.each(ro.datas, function(index, vo){
+                        console.log(ro)
+                        if(vo.answerType == 1){
+                            subanstr = subanstr + `<div class="item-user height-5">
+                     <div class="aui-card-list-header aui-card-list-user padding-left">
+                            <div class="aui-card-list-user-info clearfix text-light padding-bottom">
+                                <span>`+vo.memName+` </span>&nbsp;&nbsp;
+                                <span>`+vo.recCreateDt.substr(0,16)+`</span>
+                                <span class="fr1 `+addClss(vo.accepted)+`" data-id="`+vo.id+`" data-quesid="`+vo.questionId+`" onclick="cn(this)">`+text(vo.accepted)+`</span>
+                            </div>
+                            <div class="aui-card-list-user-avatar">
+                                <img src=`+vo.memPicUrl+` style="width:2rem" class="aui-img-round">
+                            </div>
+                            <div class="aui-card-list-user-name">
+                                <div class="aui-text-info">
+                                    <audio preload="auto" onclick="playaudio(this)">
+                                        <source src=`+vo.voiceMp3Url+` type="audio/mpeg" />
+                                    </audio>
+                                    <span class="voice">
+                                        <i></i>
+                                    </span>
+                                    <span class="second">`+vo.dataLongs+`s</span>
+                                </div>
+                             </div>
+                      </div>
+                 </div>`;
+                        }
+                        if(vo.answerType == 0){
+
+                            subanstr = subanstr + `<div class="item-user height-5"><div class="aui-card-list-header aui-card-list-user padding-left">
+                     <div class="aui-card-list-user-info clearfix text-light padding-bottom">
+                         <span>`+vo.memName+` </span>&nbsp;&nbsp;
+                         <span>`+vo.recCreateDt.substr(0,16)+`</span>&nbsp;&nbsp;
+
+                         <span class="fr1 `+addClss(vo.accepted)+`" data-id="`+vo.id+`" data-quesid="`+vo.questionId+`" onclick="cn(this)">`+text(vo.accepted)+`</span>
+                     </div>
+                     <div class="aui-card-list-user-avatar">
+                         <img src="`+vo.memPicUrl +`" style="width:2rem" class="aui-img-round">
+                     </div>
+                     <div class="aui-card-list-user-name">
+                         <div>
+                             <p>`+vo.textContent+`</p>
+                         </div>
+                     </div>
+                 </div></div>`
+
+                        }
+                    });
+                }
+
+            },
+            error : function(err) {
+                alert(err.message);
+            }
+        });
+
+        return subanstr;
+    }
+
+
+
+    //初始化页面
+    function initpagedata(){
+        var params={
+            openId:openIdv,
+            questionid:questionIdv,
+        };
+        $.ajax({
+            type : "POST",
+            url : url+"/wx/web/question/getofferquestionitem",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data : JSON.stringify(params),
+            success : function(ro) {
+                var info=ro.datas;
+                var rowstr="";
+                acc=ro.datas.accepted;
+                console.log(ro)
+                rowstr+=`<div class="aui-card-list">
+                <div class="aui-card-list-header aui-card-list-user">
+
+                  <div class="zfbtn `+zfzt(info.payState)+`" data-id="`+info.id+`" data-pric="`+info.questionFee/100+`">`+text2(info.payState)+`</div>
+                            <div class="zfbtn tk`+tkzt(info.accepted,info.payState)+`" >已退款</div>
+
+                    <div class="aui-card-list-user-avatar">
+                        <img src=`+info.picUrl+` style="width:2rem" class="aui-img-round">
+                    </div>
+                    <div class="aui-card-list-user-name">
+                        <div class="aui-text-info"><span>`+info.memName+`</span></div>
+                        <div class="aui-font-size-14 text-light" style="position: absolute;bottom: -24px;right: 0;">赏金￥<span>`+info.questionFee/100+`</span></div>
+                    </div>
+                    <div class="aui-card-list-user-info text-light">收藏爱好者</div>
+                </div>
+                <div class="aui-card-list aui-border-t">
+                <div class="aui-card-list-content"> <div class="aui-card-list-content-padded aui-padded-b-5">
+                  `+info.quesTitle+`</div>`;
+                rowstr += `<div class="aui-row aui-row-padded">
+				  `+imgs(info.id)+`</div></div>
+                </div>`;
+                rowstr = rowstr + addanswerlist();
+                $(rowstr).appendTo("#pagefirst");
+            },
+            error : function(err) {
+                alert(err);
+            }
+        });
+        $("div.lazy").lazyload();
+    }
+
+
+    $(function(){
+
+        //var str = addanswerlist();
+        //alert(str);
+        //addimgviews();
+        //初始化页面
+
+        initpagedata();
+        //初始化图片事件
+    });
+
+    //调用微信预览图片接口
+    function getPicInfo(obj){
+        //var imgObj = Array.prototype.slice.call($('.aui-col-xs-4 img'));   //获取图文中所有的img标签对象
+        var $this=$(obj);
+        var nowsrc=$this.attr('data-original');
+        var imgObj=Array.prototype.slice.call($this.parent().find('.aui-col-xs-4'));
+        console.log(nowsrc);
+        console.log(imgObj);
+        var imgs=[];
+        $.each(imgObj,function (el,index) {
+            imgs.push(index.dataset.original)
+        })
+        WeixinJSBridge.invoke("imagePreview",{
+            "urls":imgs,
+            "current":nowsrc
+        });
+    }
+
+    //获取图片接口
+    function imgs(id) {
+
+        var imgprams={
+            openId : openIdv,
+            webquestionid :id
+        };
+        var imgstrs="";
+        $.ajax({
+            type : "GET",
+            url : url+"/wx/web/question/getquestionimglist",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data : imgprams,
+            success : function(ro) {
+                $.each(ro.datas, function(index, vo){
+                    if(vo.attachType=="img"){
+                        imgstrs+=`<div class="aui-col-xs-4 lazy" data-original="`+vo.attachUrl+`" style="background-image: url(../../static/aui/myimages/loading.gif)" onclick="getPicInfo(this)">
+                                        </div>`
+                    }else {
+                        imgstrs+=`<div class="aui-col-xs-4 video-content">
+                        <video id="video" width="100%" height="100%" style="background: #fff">
+                            <source src=`+vo.attachUrl+` type="video/mp4"/>
+                            <source src=`+vo.attachUrl+` type="video/webM"/>
+                            <source src=`+vo.attachUrl+` type="video/ogg"/>
+                        </video>
+                        <div class="cover">
+                            <b></b>
+                         </div>
+                        </div></div>`;
+                    }
+                });
+            },
+        });
+        return imgstrs
+    }
+
+    //是否显示支付按钮
+    function zfzt(payState) {
+        if(payState=="0"){
+            return "wzf zfzt"
+        }else if(payState=="1"){
+            return "yzf"
+        }
+    }
+    function text2(payState) {
+        if(payState=="0"){
+            return "去支付"
+        }else if(payState=="1"){
+            return "支付成功"
+        }
+    }
+    //是否显示退款按钮
+    function tkzt(acc,paystate) {
+        if(acc==0&&paystate==4){
+            return "tkzt"
+        }{
+            return ""
+        }
+    }
+
+    function addClss(id) {
+        if(acc=="1"){
+            let str=(id=="1")? "ycn":"wcn";
+            return str;
+        }else {
+            return "";
+		}
+    }
+    function text(id) {
+        let str=(id=="1")? "已采纳":"点击采纳";
+        return str;
+    }
+    $("div").on('click','.wzf',function () {
+        let $this=$(this);
+        let quseid=$this.attr('data-id');
+        let pric=$this.attr('data-pric');
+        getwxpay(quseid,pric);
+        return false;
+    });
+    //播放语音
+    $("div").on('click','.aui-text-info',function () {
+        var $this=$(this);
+        var audio=$this.find('audio');
+        //console.log($this.play());
+        audio[0].play()
+    })
+    //点击采纳
+    function cn(obj) {
+        let $this=$(obj);
+        let id=$this.attr('data-id');
+        let quesid=$this.attr('data-quesid');
+        if($this.hasClass('ycn')){
+            return false;
+		}
+        $.ajax({
+            type: "GET",
+            url: url + "/wx/web/answer/offeransweraccept",
+            dataType: 'json',
+            async: false,
+            contentType: "application/json",
+            data: {
+                openId:openIdv,
+                questionid:quesid,
+                answerid:id
+            },
+            success: function (ro) {
+                layer.open({
+                    content: ro.message
+                    ,skin: 'msg'
+                    ,time: 1 //2秒后自动关闭
+                });
+                $("#pagefirst").find('div').remove();
+                initpagedata()
+            }
+        })
+    }
+
+    //唤起微信支付
+    function getwxpay(quesid,pri) {
+        var parmas={
+            openId:openIdv,
+            cardType:1,
+            fee:pri,
+            orderType:0,
+            feeType:"offer",
+            questionid:quesid
+        }
+        //console.log(parmas)
+        $.ajax({
+            type : "GET",
+            url : url+"/wx/web/apporder/getorderforweixinpay",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data : parmas,
+            success : function(ro) {
+                if(ro.code == 200){
+                    console.log(ro.datas)
+                    var str = window.navigator.userAgent;
+                    var version = str.substring(8, 11);
+                    if (version != "5.0") {
+                        alert("微信浏览器系统版本过低，请将微信升级至5.0以上");
+                    } else {
+                        WeixinJSBridge
+                            .invoke('getBrandWCPayRequest', {
+                                "appId" : ro.datas.appId, //公众号名称，由商户传入
+                                "timeStamp" : ro.datas.timeStamp, //时间戳
+                                "nonceStr" : ro.datas.nonceStr, //随机串
+                                "package" : ro.datas.wxPackage,//统一支付接口返回的prepay_id 参数值，提交格式如：prepay_id=***
+                                "signType" : ro.datas.signType, //微信签名方式:sha1
+                                "paySign" : ro.datas.paySign
+                                //微信签名
+                            }, function(res) {
+
+                                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                    alert("支付成功")
+                                } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                                    alert("取消支付");
+                                } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+                                    alert("支付失败");
+                                }
+                            });
+                    }
+
+
+                }
+
+            },
+            error : function(err) {
+                alert(err.message);
+            }
+        });
+
+    }
+
+</script>
+</html>

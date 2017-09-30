@@ -1,0 +1,55 @@
+.user-info {
+    background-color: #ffffff;
+    padding: 0.75rem 0;
+}
+img.avatar {
+    display: block;
+    margin: 0 auto;
+    width: 23%;
+}
+.aui-list .aui-list-header {
+    background-color: #fafafa;
+    line-height: 1.2rem;
+}
+.aui-list .aui-list-item {
+    background-color: #fff;
+}
+.aui-bar-tab-item>.bar-tab-label-wen{
+    /*width: 3em;*/
+    height: 2rem;
+    background: #931a02;
+    border-radius: 0.3rem;
+    text-align: center;
+    line-height: 2rem;
+    color: #fff;
+    font-size: 22px;
+}
+.margin-t-6{
+    margin-top: 0.2rem !important;
+
+}
+.margin-b-6{
+    margin-bottom: 0.2rem !important;
+
+}
+.red-button2{
+    display:none;
+    border-top: 0.5rem solid #fff;
+    border-bottom: 0.1rem solid #fff;
+    margin: 0
+}
+
+.aa{
+    margin-top: 0.4rem;
+}
+.aui-content .back-color{
+    /*background: #fafafa;*/
+    background: red !important;;
+}
+.border-top{
+    border-top: 0.4rem solid #fafafa;
+}
+.last-li{
+    height: 3rem;
+    background: #fafafa;
+}

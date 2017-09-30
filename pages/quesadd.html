@@ -1,0 +1,163 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+<title>我的主页</title>
+<link rel="stylesheet" type="text/css" href="../static/aui/mycss/aui.css" />
+<link rel="stylesheet" type="text/css" href="../static/aui/mycss/footer.css" />
+<style>
+.box1 {
+	position: relative;
+	top: 3rem;
+}
+.margin-left {
+	position: absolute;
+	top: 10rem;
+	left: 3rem;
+}
+
+.margin-right {
+	position: absolute;
+	top: 10rem;
+	right: 3rem;
+}
+
+.rule {
+	margin: 0 auto;
+	width: 80%;
+}
+
+h3 {
+	/*margin: 3rem 0 0.5rem 1rem;*/
+	margin: 0 auto;
+	width: 4rem;
+}
+li {
+    color:#0F0F0F;font-size:14px;
+}
+
+.botton {
+	position: relative;
+	display: inline-block;
+	font-size: 0.8rem;
+	font-weight: 400;
+	font-family: inherit;
+	text-decoration: none;
+	text-align: center;
+	margin: 0;
+	background: #dddddd;
+	padding: 0 0.6rem;
+	height: 2rem;
+	line-height: 2rem;
+	border-radius: 0.2rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-user-select: none;
+	user-select: none;
+	color: #ffffff !important;
+	background-color: #aa321b !important;
+}
+     .aui-bar-tab-item>.bar-tab-label-wen{
+        /*width: 3em;*/
+        height: 2rem;
+        background: #931a02;
+        border-radius: 0.3rem;
+        text-align: center;
+        line-height: 2rem;
+        color: #fff;
+        font-size: 22px;
+    }
+
+</style>
+</head>
+<body>
+	<div class="box1">
+
+		<h3>提问须知</h3></br>
+		<div class="rule">
+			<ol>
+				<li>1.悬赏提问点击左边</li>
+				<li>2.专家提问请点击右边</li>
+				<li>3.专家提问先选择专家擅长</li>
+				<li>4.再选推荐专家或搜索专家</li>
+				<li>5.进入提问页面</li>
+				<li>6.发起支付，支付完成后发布成功</li>
+			</ol>
+		</div>
+		<div class="botton fl margin-left" data-href="question/offerquesadd.html?openId=oCmyxw1WGsfgw0xGQpHXasTRGX6E">悬赏提问</div>
+		<div class="botton fr margin-right" data-href="expert/strongs.html?openId=oCmyxw1WGsfgw0xGQpHXasTRGX6E">专家提问</div>
+	</div>
+	<footer class="aui-bar aui-bar-tab" id="footer">
+		<div class="aui-bar-tab-item" tapmode id="tabbar1">
+			<!--<img class="tuijian" src="../static/aui/myimages/icon-question.png"/>-->
+			<div class="icon tuijian"></div>
+			<div class="aui-bar-tab-label">推荐</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode id="tabbar2">
+			<!--<img class="tuijian" src="../static/aui/myimages/icon-offer.png"/>-->
+			<div class="icon xuanshagn"></div>
+			<div class="aui-bar-tab-label">悬赏</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode id="tabbar3">
+			<div class="aui-bar-tab-label bar-tab-label-wen">问</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode id="tabbar4">
+			<!--<img class="tuijian" src="../static/aui/myimages/icon-expert.png"/>-->
+			<div class="icon zhuanjia"></div>
+			<div class="aui-bar-tab-label">专家</div>
+		</div>
+		<div class="aui-bar-tab-item aui-active" tapmode id="tabbar5">
+			<!--<img class="tuijian" src="../static/aui/myimages/icon-member.png"/>-->
+			<div class="icon wode"></div>
+			<div class="aui-bar-tab-label">我的</div>
+		</div>
+	</footer>
+</body>
+<script type="text/javascript"
+	src="../static/aui/script/aui-tab.js"></script>
+<script>
+
+	var tab = new auiTab({
+		element : document.getElementById("footer")
+	}, function(ret) {
+		//document.getElementById("demo").textContent = ret.index;
+        if (ret) {
+            if (ret.index == 5) {
+                window.location = "member.html?openId="+openIdv;
+                return;
+            }
+            if (ret.index == 4) {
+                window.location = "expert.html?openId="+openIdv;
+                return;
+            }
+            if (ret.index == 3) {
+                window.location = "quesadd.html?openId="+openIdv;
+                return;
+            }
+            if (ret.index == 2) {
+                window.location= "offer.html?openId="+openIdv;
+            }
+            if (ret.index == 1) {
+                return;
+            }
+        }
+	});
+	tab.setActive(3);
+
+	//
+	var listItem = document.querySelectorAll('.botton');
+	for (var i = 0; i < listItem.length; i++) {
+		listItem[i].onclick = function() {
+			var dataHref = this.getAttribute('data-href');
+			location.href = dataHref;
+		}
+	}
+
+</script>
+</html>

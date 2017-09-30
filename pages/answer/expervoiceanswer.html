@@ -1,0 +1,989 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<meta name="format-detection"
+	content="telephone=no,email=no,date=no,address=no">
+<title>语音回答</title>
+<link rel="stylesheet" type="text/css" href="../../static/aui/mycss/aui.css" />
+<script type="text/javascript" src="../../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<style type="text/css">
+    .box{
+        margin-bottom: 2rem;
+        background: #f7f7f7;
+    }
+    .user-info {
+        background-color: #ffffff;
+        padding: 0.75rem 0;
+    }
+    img.avatar {
+        display: block;
+        margin: 0 auto;
+        width: 20%;
+    }
+    .aui-list .aui-list-header {
+        background-color: #ffffff;
+        line-height: 1.2rem;
+    }
+    .aui-list .aui-list-item {
+        background-color: #f8f6ef;
+    }
+     .aui-bar-tab-item>.bar-tab-label-wen{
+        /*width: 3em;*/
+        height: 2rem;
+        background: #931a02;
+        border-radius: 0.3rem;
+        text-align: center;
+        line-height: 2rem;
+        color: #fff;
+        font-size: 22px;
+    }
+.tuijian{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-question.png")no-repeat;
+    background-size: cover;
+}
+.xuanshagn{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-offer.png")no-repeat;
+    background-size: cover;
+}
+.zhuanjia{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-expert.png")no-repeat;
+    background-size: cover;
+}
+.wode{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-member.png")no-repeat;
+    background-size: cover;
+}
+    .border-bottom{
+        border-bottom: 1px solid #e1e7ef;
+    }
+    .no-margin{
+        margin: 0 !important;
+    }
+    .progress{
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 1rem;
+    }
+    .timer{
+        width: 3rem;
+        height: 2rem;
+        margin: 0 auto;
+        color: #1a1a1a;
+        line-height: 2rem;
+    }
+.timeLine {
+    width: 13rem;
+    height: 0.1rem;
+    background: #e1e7ef;
+    margin: 1rem auto 1rem;
+    position: relative;
+}
+.timeLine>span{
+    position: absolute;
+    left:0;
+    top:0;
+    height:100%;
+    width:0%;
+    background: #3a3a3a;
+}
+.sf{
+    transform:scale(0.8,0.8);
+    animation:1s infinite;
+    -webkit-animation:1s infinite; /* Safari 和 Chrome */
+}
+    .button{
+        margin: 0 auto;
+        width: 3rem;
+        background: #931a02;
+        height: 1.5rem;
+        border-radius: 10%;
+        line-height: 1.5rem;
+        text-align: center;
+        color: #fff;
+        font-size: 18px;
+    }
+    .voiceimg{
+        width: 80%;
+        height: 4rem;
+        /*background: red;*/
+        margin: 0 auto;
+        margin-bottom: 1rem;
+		position: relative;
+    }
+    .voiceimg>.sound{
+        width: 1.5rem;
+        height: 1.5rem;
+        float: left;
+        background: url("../../static/aui/myimages/startlisten@2x.png")no-repeat;
+        margin-top: 1rem;
+        background-size: contain;
+
+    }
+    .voiceimg>.record{
+		width: 4rem;
+		height: 4rem;
+		/* float: left; */
+		border-radius: 50%;
+		background-color: #931a02 !important;
+		margin-left: -2rem;
+		/* background-image: url(../../static/aui/myimages/record@2x.png); */
+		background-size: contain;
+		position: absolute;
+		left: 50%;
+
+    }
+     .voiceimg>.record>.img{
+         width: 2.5rem;
+         height: 2.5rem;
+         background-image: url("../../static/aui/myimages/record@2x.png");
+         background-size: contain;
+         position: absolute;
+         margin-top: 0.9rem;
+         margin-left: 0.7rem;
+
+    }
+    .voiceimg>.delete{
+        width: 1.5rem;
+        height: 1.5rem;
+        float: right;
+        margin-top: 1rem;
+        background: url("../../static/aui/myimages/deleterecord@2x.png") no-repeat;
+        background-size: contain;
+    }
+    .padding-left{
+        padding: 0 0 0 0.5rem;
+    }
+    .padding-bottom{
+        padding-bottom: 0.5rem;
+    }
+    .height-5{
+        height: 4rem;
+    }
+    .fr1{
+        float: right;
+        padding-right: 0.5rem;
+        color: #cacaca;
+    }
+    .voice{
+        position: relative;
+    }
+    .voice>i{
+        position: absolute;
+        top: 0px;
+        left: 40%;
+    }
+    .second{
+        position: relative;
+        top: -0.7rem;
+    }
+    .item-user{
+        border-top: 0.1rem  solid #eef0f3;
+        border-bottom: 0.15rem  solid #eef0f3;
+    }
+    .user-box{
+        width: 100%;
+        height: 3.5rem;
+        padding: 0.5rem 0 0 0.5rem;
+        /*background: chartreuse;*/
+
+    }
+    .user-img{
+        width: 2.8rem;
+        height: 2.8rem;
+        float: left;
+        position: relative;
+    }
+    .user-img>i{
+        width: 0.6rem;
+        height: 0.6rem;
+        display: inline-block;
+        background: url("../../static/aui/myimages/v.png")no-repeat;
+        background-size: contain;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+    .user-img>img{
+        width: 100%;
+        height: 100%;
+    }
+    .user-text{
+        float: left;
+        width: 70%;
+        margin-left: 0.6rem;
+
+        /*height: 2.6rem;*/
+    }
+    .user-text>p{
+        color: #1a1a1a;
+        font-size: 12px;
+        width: 100%;
+        height: 100%;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        margin-bottom: 0.6rem;
+
+    }
+    .user-text>p>span{
+        font-size: 12px;
+        color: #c1c1c1;
+    }
+    .item-user-voice{
+        /*margin-left: 4rem;*/
+    }
+    .item-user-voice>span{
+        /*padding-right: 0.5rem;*/
+    }
+    .user-data{
+        float: right;
+    }
+    .video-content,.aui-col-xs-4{
+    height: 4.08rem;
+    width: 30%;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+   }
+ .cover{
+     position: absolute;
+     top: 0.12rem;
+     left: 0.1rem;
+     /*background:#000;*/
+     background-color: rgba(0,0,0,0.3);
+     width:97%;
+     height:95%;
+     /*padding:5px;*/
+     color:#F00;
+     filter:alpha(Opacity=40);
+     -moz-opacity:0.4;opacity: 0.4
+ }
+ .cover>b{
+     position: absolute;
+     top:32%;
+     left: 35%;
+     margin: 0 auto;
+     display: block;
+     width: 1.5rem;
+     height: 1.5rem;
+     background: rosybrown;
+     text-align: center;
+     line-height: 2rem;
+     background: url("../../static/aui/myimages/3.png");
+     background-size: contain;
+ }
+
+</style>
+</head>
+<body>
+<div class="aui-content box" id="pagefirst"></div>
+</body>
+<script src="../../static/aui/myscript/jweixin-1.2.0.js"></script>
+<script src="../../static/aui/myscript/sha1.js"></script>
+<script type="text/javascript" src="../../static/aui/myscript/lazyload.min.js"></script>
+<script type="text/javascript">
+//    var openIdv = "${openId}";
+//    var questionIdv = "${questionid}";
+    var url="http://192.168.199.148:8080/DiscuzServer";
+    //获取页面传递参数-->
+    let urs=window.location.search;
+    let strs=urs.substring(1);
+    let silp=strs.split('&');
+    let res={};
+    for (let i=0;i<silp.length;i++){
+    res[silp[i].split("=")[0]]=silp[i].split("=")[1];
+    }
+    var openIdv=res.openId;//openid
+    var questionIdv=res.questionid//问题id
+	console.log(res)
+    var timer_i = 0;
+    if(timer_i>30){
+        timer_i=30;
+    }
+    // 智能接口
+    var voice = {
+        localId: '',//local voiceid
+        serverId: ''//server voiceid
+    };
+
+
+    //  开始录音变量
+    //count second
+    var intervalid;
+    var str='';
+    var recordTimer;
+    var START;//开始录音时间戳
+    var END;//结束录音时间戳
+
+
+
+    //加载图片模块
+    function accessImages(imgrows,quesid){
+
+        //下面加载三个盒子
+        imgrows = imgrows + `<div class="aui-card-list-content">`;
+        var subimgrows="";
+
+        //初始化本问题图片数组和视频数组
+        var imgprams={
+            openId : openIdv,
+            webquestionid : quesid
+        }
+        $.ajax({
+            type : "GET",
+            url : url+"/wx/web/question/getquestionimglist",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data : imgprams,
+            success : function(ro) {
+                if(ro.code == 200){
+                    //alert("成功");
+                    //获取总量
+                    var subimgsize = 0;
+                    $.each(ro.datas, function(index, vo){
+                        if(index != 0){
+                            subimgsize = subimgsize + 1;
+                        }
+                    });
+                    //alert("数据总量是"+ subimgsize);
+                    //按总量计算添加属性
+                    $.each(ro.datas, function(index, vo){
+                        //加开头
+                        if(index == 0 || index == 3 || index == 6){
+                            subimgrows = subimgrows + `<div class="aui-row aui-row-padded">`;
+                            if(vo.attachType=="img"){
+                                subimgrows = subimgrows + `<div class="aui-col-xs-4"><img num=`+quesid+` class="lazy" data-original=`+vo.attachUrl+` src="../../static/aui/myimages/locading.gif"></div>`;
+                            }else{
+                                subimgrows = subimgrows + `<div class="aui-col-xs-4 video-content">
+	                            <video onclick="reduction(this)" id="video" width="100%" height="100%" style="background: #fff">
+	                                <source src=`+vo.attachUrl+` type="video/mp4"/>
+	                                <source src=`+vo.attachUrl+` type="video/webM"/>
+	                                <source src=`+vo.attachUrl+` type="video/ogg"/>
+	                            </video>
+
+                                        <div class="cover">
+                                        <b></b>
+                                        </div>
+                                        </div>`;
+	        	  			     }
+	      	  			}
+	      	  			//加中间
+	      	  			if(index == 1 || index == 4 || index == 7){
+	      	  			     if(vo.attachType=="img"){
+	      	  			     subimgrows = subimgrows + `<div class="aui-col-xs-4"><img num=`+quesid+` class="lazy" data-original=`+vo.attachUrl+` src="../../static/aui/myimages/locading.gif"></div>`;
+	 	  			         }else{
+	       	  			    	subimgrows = subimgrows + `<div class="aui-col-xs-4 video-content">
+                                    <video onclick="reduction(this)" id="video" width="100%" height="100%" style="background: #fff">
+                                    <source src=`+vo.attachUrl+` type="video/mp4"/>
+                                    <source src=`+vo.attachUrl+` type="video/webM"/>
+                                    <source src=`+vo.attachUrl+` type="video/ogg"/>
+                                    </video>
+
+                                    <div class="cover">
+                                    <b></b>
+                                    </div>
+                                    </div>`;
+	  	  			     }
+	      	  			}
+	      	  			//加结发尾
+	      	  			if(index == 2 || index == 5 || index == 8){
+	      	  			     if(vo.attachType=="img"){
+	      	  			     subimgrows = subimgrows + `<div class="aui-col-xs-4"><img num=`+quesid+` class="lazy" data-original=`+vo.attachUrl+` src="../../static/aui/myimages/locading.gif"></div>`;
+		  			         }else{
+		      	  			    subimgrows = subimgrows + `<div class="aui-col-xs-4 video-content">
+                                    <video onclick="reduction(this)" id="video" width="100%" height="100%" style="background: #fff">
+                                    <source src=`+vo.attachUrl+` type="video/mp4"/>
+                                    <source src=`+vo.attachUrl+` type="video/webM"/>
+                                    <source src=`+vo.attachUrl+` type="video/ogg"/>
+                                    </video>
+
+                                    <div class="cover">
+                                    <b></b>
+                                    </div>
+                                    </div>`;
+		  	  			     }
+	      	  		         subimgrows = subimgrows + `</div>`;
+	      	  			}
+	      	  			//最后一个非正常加发尾
+	      	  			if(index == subimgsize){
+	      	  				if(index == 0|| index == 1 || index == 3 || index == 4 || index == 7 || index == 6){
+	      	  			     subimgrows = subimgrows + `</div>`;
+	      	  				}
+	      	  			}
+	    				//alert(subimgrows);
+	    				//return;
+	      	  		});
+	      		}
+
+	      	},
+	      	error : function(err) {
+	      		  alert(err.message);
+	      	}
+	      });
+
+	      imgrows = imgrows + subimgrows + `</div>`;
+	      return imgrows;
+	}
+
+
+//初始化首页
+function initpage(){
+    //动态添加擅长分类的类型 并添加事件
+    //alert("questionIdv:"+questionIdv);
+    //return;
+    var params={
+    	openId:openIdv,
+    	questionid:questionIdv,
+    }
+    $.ajax({
+      	type : "POST",
+      	url : url+"/wx/web/question/getexpertquestionitem",
+      	dataType : 'json',
+      	async: false,
+      	contentType : "application/json",
+      	data : JSON.stringify(params),
+      	success : function(ro) {
+      		if(ro.code == 200){
+      			//alert("成功");
+      			//return;
+                var rows="";
+
+rows = rows + ` <div class="a-detail">
+                                    <div class="aui-card-list border-bottom no-margin">
+                                    <div class="aui-card-list-header aui-card-list-user">
+                                    <div class="aui-card-list-user-avatar">
+                                    <img src=`+ro.datas.picUrl+` style="width:2rem" class="aui-img-round">
+                                    </div>
+                                    <div class="aui-card-list-user-name">
+                                    <div class="aui-text-info"><span>`+ro.datas.memName+`</span></div>
+                                    <div class="aui-font-size-14 text-light">赏金￥<span>`+ro.datas.questionFee/100+`</span></div>
+                                    </div>
+                                    <div class="aui-card-list-user-info text-light">瓷器收藏爱好者</div>
+                                    </div>
+                                    <div class="aui-card-list aui-border-t">`;
+             //添加内部图片
+             rows = accessImages(rows,ro.datas.id);
+             //添加尾部图片
+             rows = rows + `<div class="aui-card-list-content-padded aui-padded-b-5" style="padding-left: 1.5rem">`+ro.datas.quesTitle+`</div>
+                                    </div>`;
+
+
+        rows = rows + `</div>
+                                    <div class="a-detail-item">
+                                    </div>
+                                    </div>`;
+
+
+       rows = rows + `<div class="progress">
+                                    <div class="timer">
+                                    <div class="current fl">00</div>
+                                    <div class="duration fr">30S</div>
+                                    </div>
+                                    <div class="timeLine">
+                                    <span class="timeProgress"></span>
+                                    </div>
+                                    <div class="voiceimg">
+                                    <div class="sound" id="bfbtn"></div>
+                                    <div class="record">
+                                    <div class="img"></div>
+                                    <input id="mes" type="hidden" value="0">
+                                    </div>
+                                    <div class="delete"></div>
+                                    </div>
+                                    <div class="button" id="fs">发送</div>
+                                    </div>`;
+
+      	  		//alert(rows);
+      	  	    $("#pagefirst").append(rows);
+
+      		}
+
+      	},
+      	error : function(err) {
+      		  alert(err.message);
+      	}
+      });
+
+}
+
+
+//从数据库中取得图片数组
+  function getimagesarray(quesidvv){
+      var viewimgs=[];
+      //初始化本问题图片数组和视频数组
+      var imgprams={
+     	openId : openIdv,
+     	webquestionid : quesidvv
+       }
+       $.ajax({
+       	type : "GET",
+       	url : url+"/wx/web/question/getquestionimglist",
+       	dataType : 'json',
+       	async: false,
+       	contentType : "application/json",
+       	data : imgprams,
+       	success : function(ro) {
+       		if(ro.code == 200){
+
+         			//alert("成功");
+
+         			//添加图片地址到数组
+         	  		$.each(ro.datas, function(index, vo){
+         	  		     if(vo.attachType=="img"){
+         	  		    	viewimgs.push(vo.attachUrl);
+         	  		     }
+         	  		});
+
+       		}
+
+       	},
+       	error : function(err) {
+       		  alert(err.message);
+       	}
+       });
+
+     return viewimgs;
+
+}
+
+
+
+//初始化视频播放
+function initviewvideos(){
+    //视频播放js代码
+    $.each($('.video-content'),function (index,item) {
+       $(item).on('click',function (e) {
+           var video = $(this).find("video").get(0);
+           if(video.paused){
+               video.play();
+           }
+       })
+    });
+}
+
+//初始化图片轮转
+function initviewimags(){
+
+  //微信调取照片预览接口
+   //将函数作为参数，html架构加载完成之后执行
+   function addLoadEvent(func){
+       var oldonload=window.onload;
+       //将原来的 onload 的值赋给临时变量 oldonload。
+       if(typeof window.onload!="function"){
+           //判断 onload 的类型是否是 function。如果已经执行window.onload=function(){...} 赋值，那么此时 onload 的类型就是 function
+           //否，则说明 onload 还没有被赋值，当前任务 func 为第一个加入的任务
+           window.onload=func();
+
+           //作为第一个任务，给 onload 赋值
+       }else{
+           //是，则说明 onload 已被赋值，onload 中先前已有任务加入
+           window.onload=function(){
+               oldonload();
+               func();
+               //作为后续任务，追加到先前的任务后面
+           }
+       }
+   }
+
+   //创建一个空数组准备查看图片
+ function getPicInfo(){
+       var imgObj = Array.prototype.slice.call($('.aui-col-xs-4 img'));   //获取图文中所有的img标签对象
+       for(var i=0; i<imgObj.length; i++) {
+//           alert(imgObj[i].src)
+//           nowImgurl = this.src;    //获取当前点击图片url
+           //imgs.push(imgObj[i].dataset.original);
+           //下面调用微信内置图片浏览组建
+           imgObj[i].onclick=function(){
+           	var imgs=[];
+               var now=$(this).context.currentSrc;
+               var ques_imagid = $(this).attr("num");
+               //alert(ques_imagid);
+               //alert(now);
+               imgs = getimagesarray(ques_imagid);
+               //alert(imgs);
+               //return;
+               WeixinJSBridge.invoke("imagePreview",{
+                  "urls":imgs,
+                  "current":now
+               })
+           }
+       }
+   }
+   addLoadEvent(getPicInfo);    //监听事件
+
+}
+
+
+
+
+  //初始化页面
+  $(function(){
+       //初始化页面数据
+       initpage();
+	   //懒加载事件
+	   $("img.lazy").lazyload();
+	   //加载图片事件
+	   initviewimags();
+	   //加载视频事件
+	   initviewvideos();
+	   //添加提交事件
+	   //initsubmitevent();
+	   //初始化录音事件
+       initrecord();
+  });
+
+
+  //定时器
+  function fun() {
+      if (timer_i === 60) {
+          console.log('录音结束');
+          clearInterval(intervalid);
+          str = `<div class="item-user height-5">
+                                    <div class="aui-card-list-header aui-card-list-user padding-left">
+                                    <div class="aui-card-list-user-info clearfix text-light padding-bottom">
+                                    <span>小灰 </span>&nbsp;&nbsp;
+                                    <span>2017-07-09</span>&nbsp;&nbsp;
+                                    <span>12:44</span>
+                                    <span class="fr1">点击采纳1</span>
+                                    </div>
+                                    <div class="aui-card-list-user-avatar">
+                                    <img src="../../static/aui/myimages/user-icon2.png" style="width:2rem" class="aui-img-round">
+                                    </div>
+                                    <div class="aui-card-list-user-name">
+                                    <div class="aui-text-info">
+                                    <span id="dtbfbtn" class="voice">
+                                    <i></i>
+                                    </span>
+                                    <span class="second">${timer_i}s</span>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>`;
+          $('.a-detail-item').show().html(str);
+
+          	wxuploadVoice();
+          //动态添加播放事件
+          $('#dtbfbtn').on('click',function () {
+              //console.log("播放");
+              //alert("播放");
+              if (voice.localId == '') {
+                  alert('请先使用录制一段声音');
+                  return;
+              }
+              wx.playVoice({
+                  localId: voice.localId
+              });
+          });
+
+          $('.timeProgress').width(timer_i * 100 + '%');
+
+      }else {
+          $('.timeProgress').width((timer_i / 30) * 100 + '%');
+          document.getElementById("mes").value = timer_i;
+          if (timer_i < 10) {
+              $('.current').html('0' + timer_i);
+          } else {
+              $('.current').html(timer_i);
+          }
+          timer_i++;
+      }
+
+
+  }
+
+
+  //上传录音
+      //调用微信的上传录音接口把本地录音先上传到微信的服务器
+      //不过，微信只保留3天，而我们需要长期保存，我们需要把资源从微信服务器下载到自己的服务器
+
+      //上传到微信服务器
+	  function wxuploadVoice() {
+          if (voice.localId == '') {
+              alert('请先录制一段声音');
+              return;
+          }
+          wx.uploadVoice({
+              localId: voice.localId,
+              success: function (res) {
+                  voice.serverId = res.serverId;
+              }
+          });
+      }
+
+
+
+      //上传到自己服务器
+     function myuploadVoice() {
+         var secondv = parseInt($("#mes").val())+1;
+         var recordparams={
+             openId:openIdv,
+             questionid:questionIdv,
+             serverId:voice.serverId,
+             recordlongs:secondv,
+             globalType:1,
+         }
+         //保存到后台服务器
+         $.ajax({
+             type : "POST",
+             url : url+"/wx/web/answer/sendvoicedata",
+             dataType : 'json',
+             async: false,
+             contentType : "application/json",
+             data : JSON.stringify(recordparams),
+             success: function (data) {
+                 if(ro.code == 200){
+                     alert("发送成功");
+                     window.location = url+"/wx/web/my/answer?openId="+openIdv;
+                 }
+             },
+             error: function (xhr, errorType, error) {
+                 console.log(error);
+             }
+         });
+     }
+
+  //初始化录音事件
+function initrecord(){
+
+	// https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd86f8a22d2aa2884&secret=30b9562388635e2d42bddb7dc4980d89
+	// https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ejlgd8XzV9yypSeD7eJYAh3Qy1ywYTREvy4fvEDm_pcqho0eCDIgxkg_TiYim6plVrPR7pLEAoz_I5Q1tMJe_hU8sPvHWS3l1kKuR3cZADYJE_gaLuBOrObOPV2lmI_iVEPfACAKTE&type=jsapi
+		//配置文件
+	 //var url="https://api.weixin.qq.com/cgi-bin/token";
+	 var appid="";
+	 //var secret="91b4d986e06dcd188b6bbfd7d2e44315";
+	 //var token="";
+	 var jsapi_ticket="";
+	 var nowtime=Math.floor(new Date().getTime()/1000);
+	     //取toke
+	     //取ticket
+	     var ticketprams={
+	     	openId:openIdv,
+	     }
+
+	     $.ajax({
+	       	type : "GET",
+	       	url : url+"/wx/web/main/getticket",
+	       	dataType : 'json',
+	       	async: false,
+	       	contentType : "application/json",
+	       	data : ticketprams,
+	       	success : function(ro) {
+	       		if(ro.code == 200){
+	       			console.log(ro)
+                    appid=ro.datas.appid;
+	       			jsapi_ticket = ro.datas.jsapi_ticket;
+	       			//alert(jsapi_ticket);
+	       		}
+	       	},
+	       	error : function(err) {
+	       		  alert(err.message);
+	       	}
+	       });
+
+
+
+/* 	     var timer_i = 0;
+	     if(timer_i>30){
+	         timer_i=30;
+	     } */
+
+	   //随机字符串
+	     var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+	     function generateMixed(n) {
+	         var res = "";
+	         for(var i = 0; i < n ; i ++) {
+	             var id = Math.ceil(Math.random()*35);
+	             res += chars[id];
+	         }
+	         return res;
+	     };
+	     var noncestr=generateMixed(17);
+	     //生成签名
+	     var shastring="jsapi_ticket="+jsapi_ticket+"&noncestr="+noncestr+"&timestamp="+nowtime+"&url="+window.location.href;
+	     //alert(shastring);
+
+	     var signa=hex_sha1(shastring);
+		console.log(appid);
+		console.log(jsapi_ticket);
+			 console.log(nowtime);
+			 console.log(noncestr);
+	     console.log(signa);
+	     //初始化接口
+	     wx.config({
+	         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+	         appId: appid, // 必填，公众号的唯一标识
+	         timestamp: nowtime, // 必填，生成签名的时间戳
+	         nonceStr: noncestr, // 必填，生成签名的随机串
+	         signature: signa,// 必填，签名，见附录1
+	         jsApiList: ["checkJsApi","startRecord","stopRecord","onVoiceRecordEnd","playVoice","onVoicePlayEnd","uploadVoice",] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+	     });
+
+
+	//===========================================
+
+
+	    // 录音
+	    wx.ready(function () {
+	        //$('.a-detail-item').hide();
+
+	        $('.record').on('touchstart', function(event) {
+	            $('.record').addClass('sf');
+	            event.preventDefault();
+	            clearInterval(intervalid);
+	            console.log('录音开始');
+	            intervalid = setInterval("fun()", 1000);
+	            $('.timeProgress').width(0);
+	            START = new Date().getTime();
+
+	            recordTimer = setTimeout(function () {
+	                wx.startRecord({
+	                    success: function(){
+	                        localStorage.rainAllowRecord = 'true';
+	                    },
+	                    cancel: function () {
+	                        alert('用户拒绝授权录音');
+	                    }
+	                });
+	            },200);
+	        });
+
+
+	        // 4.3 停止录音
+	        //松手结束录音
+	        $('.record').on('touchend', function (event) {
+	            event.preventDefault();
+	            $('.record').removeClass('sf');
+	            END = new Date().getTime();
+	            if ((END - START) < 300) {
+	                END = 0;
+	                START = 0;
+	                //小于300ms，不录音
+	                console.log("小于300ms，不录音");
+	                clearTimeout(recordTimer);
+	                clearInterval(intervalid);
+	            } else {
+	                //clearInterval(intervalid);
+	                $('.a-detail-item').find('div').remove();
+	                //voice.localId="";
+	                str = `<div class="item-user height-5">
+                                    <div class="aui-card-list-header aui-card-list-user padding-left">
+                                    <div class="aui-card-list-user-info clearfix text-light padding-bottom">
+                                    <span>小灰 </span>&nbsp;&nbsp;
+                                    <span>2017-07-09</span>&nbsp;&nbsp;
+                                    <span>12:44</span>
+                                    <span class="fr1">点击采纳1</span>
+                                    </div>
+                                    <div class="aui-card-list-user-avatar">
+                                    <img src="../../static/aui/myimages/user-icon2.png" style="width:2rem" class="aui-img-round">
+                                    </div>
+                                    <div class="aui-card-list-user-name">
+                                    <div class="aui-text-info">
+                                    <span id="dtbfbtn" class="voice">
+                                    <i></i>
+                                    </span>
+                                    <span class="second">`+timer_i+`s</span>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>`;
+	                $('.a-detail-item').html(str);
+
+	                //动态添加播放事件
+	                $('#dtbfbtn').on('click',function () {
+	                    //console.log("播放");
+	                    alert("播放");
+	                    if (voice.localId == '') {
+	                        alert('请先使用录制一段声音');
+	                        return;
+	                    }
+	                    wx.playVoice({
+	                        localId: voice.localId
+	                    });
+	                });
+
+	                $('.timeProgress').width(0);
+	                $('.current').html('00');
+	                wx.stopRecord({
+	                    success: function (res) {
+	                        voice.localId = res.localId;
+	                        //alert(voice.localId);
+	                    },
+	                    fail: function (res) {
+	                        alert(JSON.stringify(res));
+	                    }
+	                });
+	                clearInterval(intervalid);
+	                timer_i = 0;
+	                console.log("录音成功");
+                    wxuploadVoice();
+	            }
+	        });
+
+	        //初始化时判断录音时间
+	        if(timer_i===31){
+	            wx.stopRecord({
+	                success: function (res) {
+	                    voice.localId = res.localId;
+	                },
+	                fail: function (res) {
+	                    alert(JSON.stringify(res));
+	                }
+	            });
+	        }
+
+	        //播放事件
+	        $('#bfbtn').on('click',function () {
+	            //console.log("播放");
+	            alert("播放");
+	            if (voice.localId == '') {
+	                alert('请先使用录制一段声音');
+	                return;
+	            }
+	            wx.playVoice({
+	                localId: voice.localId
+	            });
+	        });
+
+	        //上传事件
+	        $('#fs').on('click',function () {
+	            if(!voice.localId==""){
+	                myuploadVoice();
+	            }
+	        });
+	        //删除音频事件
+	        $('.delete').click(function () {
+	            $('.a-detail-item').find('div').remove();
+	            voice.localId="";
+	        });
+	    });
+
+	    wx.error(function (res) {
+	        alert(res.errMsg);
+	    });
+
+
+
+
+
+}
+</script>
+
+</html>

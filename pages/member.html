@@ -1,0 +1,254 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection"
+          content="telephone=no,email=no,date=no,address=no">
+    <title>我的主页</title>
+    <link rel="stylesheet" type="text/css" href="../static/aui/mycss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../static/aui/mycss/footer.css" />
+    <link rel="stylesheet" type="text/css" href="../static/aui/mycss/member.css" />
+</head>
+<body>
+<div class="aui-content aui-margin-b-15" id="pagefive">
+</div>
+<footer class="aui-bar aui-bar-tab" id="footer">
+    <div class="aui-bar-tab-item" tapmode id="tabbar1">
+        <!--<img class="tuijian" src="../static/aui/myimages/icon-question.png"/>-->
+        <div class="icon tuijian"></div>
+        <div class="aui-bar-tab-label">推荐</div>
+    </div>
+    <div class="aui-bar-tab-item" tapmode id="tabbar2">
+        <!--<img class="tuijian" src="../static/aui/myimages/icon-offer.png"/>-->
+        <div class="icon xuanshagn"></div>
+        <div class="aui-bar-tab-label">悬赏</div>
+    </div>
+    <div class="aui-bar-tab-item" tapmode id="tabbar3">
+        <div class="aui-bar-tab-label bar-tab-label-wen">问</div>
+    </div>
+    <div class="aui-bar-tab-item" tapmode id="tabbar4">
+        <!--<img class="tuijian" src="../static/aui/myimages/icon-expert.png"/>-->
+        <div class="icon zhuanjia"></div>
+        <div class="aui-bar-tab-label">专家</div>
+    </div>
+    <div class="aui-bar-tab-item aui-active" tapmode id="tabbar5">
+        <!--<img class="tuijian" src="../static/aui/myimages/icon-member.png"/>-->
+        <div class="icon wode"></div>
+        <div class="aui-bar-tab-label">我的</div>
+    </div>
+</footer>
+</body>
+<script type="text/javascript" src="../static/aui/script/aui-tab.js"></script>
+<script type="text/javascript" src="../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+  var openIdv = "${openId}";
+
+apiready = function() {
+    api.parseTapmode();
+};
+
+
+
+
+
+$(function(){
+    //var url="http://192.168.199.148:8080/DiscuzServer";
+    var url=" http://j.ccyjs.cn/DiscuzServer";
+    //获取页面传递参数
+    let urs=window.location.search;
+    let strs=urs.substring(1);
+    let silp=strs.split('&');
+    let res={};
+    for (let i=0;i<silp.length;i++){
+        res[silp[i].split("=")[0]]=silp[i].split("=")[1];
+    }
+    var openId=res.openId;//openid
+    console.log(openId);
+    $.ajax({
+        type : "GET",
+        url : url+"/wx/web/member/getmember",
+        dataType : 'json',
+        async: true,
+        contentType : "application/json",
+        data :{openId:openId,order:'asc'},
+  	success : function(ro) {
+
+            console.log(ro)
+  	     var memTypestr = "";
+  			//$("#username").html("输入要添加内容即可");
+  			$("#username").html(ro.datas.name);
+  			$("#userpicurl").attr('src',ro.datas.picUrl);
+  			if(ro.datas.memType == '0'){
+  			      //alert("会员");
+  			    //$("#memTypeid").html("会员");
+  			    memTypestr = "会员";
+  			    $("#expertbutton").css("display",'block');
+  			}
+  			if(ro.datas.memType == '1'){
+  			      //alert("会员");
+			      if(ro.datas.authStatus == 1){
+   			         //$("#memTypeid").html("认证专家");
+  			           memTypestr = "认证专家";
+   			      }else{
+   			         //$("#memTypeid").html("专家");
+  			           memTypestr = "专家";
+   			      }
+  			}
+  		
+var rows = `<section class="aui-content user-info aui-text-center aui-margin-b-15">
+                       <img class="avatar aui-img-round" src=`+ro.datas.picUrl+`>
+                  <div class="aui-row aui-margin-t-15">
+                     <div class="aui-col-xs-6 aui-text-right aui-border-r aui-padded-r-10">
+                         <div class="aui-label aui-label-info">`+memTypestr+`</div>
+                     </div>
+                     <div class="aui-col-xs-6 aui-text-left aui-padded-l-10">`+ro.datas.name+`</div>
+                 </div>
+                 <div class="aui-row aui-margin-t-15" >
+                     <div class="aui-col-xs-6 aui-text-right aui-border-r aui-padded-r-10">
+                         <span class="aui-text-danger aui-margin-r-5">`+ro.datas.sumFollower+`</span>人关注我
+                     </div>
+                     <div class="aui-col-xs-6 aui-text-left aui-padded-l-10">
+                                                    我关注<span class="aui-text-danger aui-margin-l-5">`+ro.datas.sumFocus+`</span>人
+                     </div>
+                 </div>`;
+                 
+//                if(ro.datas.memType == '1'){
+// rows = rows + `<div class="aui-card-list red-button2" id="expertbutton">
+//                     <div class="aui-content-padded">
+//                         <div class="red-button1" tapmode onclick="applyexpert(`+openId`+)">我要开通专家</div>
+//                     </div>
+//                 </div>`;
+//                }
+ rows = rows + `</section>`;
+
+ 
+ rows = rows + `<section class="aui-content" id="five-my-content">
+                 <ul class="aui-list aui-list-noborder" id="ul-lista">
+                 <div class="aui-list-header">
+                     <div>
+                     <i class="aui-iconfont aui-icon-my aui-text-danger"></i>
+                                                                个人中心
+                     </div>
+                 </div>
+                 <li data-href="my/question.html?openId=`+openId+`" class="aui-list-item margin-t-6">
+                     <div class="aui-list-item-label-icon">
+                         <i class="aui-iconfont aui-icon-question"></i>
+                     </div>
+                     <div class="aui-list-item-inner aui-list-item-arrow">
+                         <div class="aui-list-item-title">我的问题</div>
+                         <div class="aui-list-item-right">共3贴</div>
+                     </div>
+                 </li>
+                 <li data-href="my/answer.html?openId=`+openId+`" class="aui-list-item margin-t-6">
+                     <div class="aui-list-item-label-icon">
+                         <i class="aui-iconfont aui-icon-question"></i>
+                     </div>
+                     <div class="aui-list-item-inner aui-list-item-arrow">
+                         <div class="aui-list-item-title">我的回答</div>
+                         <div class="aui-list-item-right">共3贴</div>
+                     </div>
+                 </li>
+                 <li data-href="my/listen.html?openId=`+openId+`" class="aui-list-item margin-t-6 ">
+                     <div class="aui-list-item-label-icon">
+                         <i class="aui-iconfont aui-icon-comment"></i>
+                     </div>
+                     <div class="aui-list-item-inner aui-list-item-arrow">
+                         <div class="aui-list-item-title">我的收听</div>
+                         <div class="aui-list-item-right">共6贴</div>
+                     </div>
+                 </li>
+                 <li data-href="../wx/web/my/focus?openId=`+openId+`" class="aui-list-item margin-t-6 ">
+                     <div class="aui-list-item-label-icon">
+                         <i class="aui-iconfont aui-icon-display"></i>
+                     </div>
+                     <div class="aui-list-item-inner aui-list-item-arrow">
+                         <div class="aui-list-item-title">我的关注</div>
+                         <div class="aui-list-item-right">共18位</div>
+                     </div>
+                 </li>
+                 <li data-href="my/balance.html?openId=`+openId+`" class="aui-list-item margin-t-6 ">
+                     <div class="aui-list-item-label-icon">
+                         <i class="aui-iconfont aui-icon-mail"></i>
+                     </div>
+                     <div class="aui-list-item-inner aui-list-item-arrow">
+                         <div class="aui-list-item-title">我的余额</div>
+                     </div>
+                 </li>
+                 <li data-href="my/offerlist.html?openId=`+openId+`" class="aui-list-item margin-t-6 margin-b-6 ">
+                     <div class="aui-list-item-label-icon">
+                         <i class="aui-iconfont aui-icon-mobile"></i>
+                     </div>
+                     <div class="aui-list-item-inner aui-list-item-arrow">
+                         <div class="aui-list-item-title">我的悬赏</div>
+                     </div>
+                 </li>
+                 <li class="last-li">
+                 </li>
+                </ul>
+                </section>`;
+                
+                $("#pagefive").append(rows);
+               //
+                var listItem=document.querySelectorAll('#ul-lista > li');
+                for (var i =0;i<listItem.length-1;i++){
+                    listItem[i].onclick=function () {
+                        var dataHref = this.getAttribute('data-href');
+                        location.href = dataHref;
+                    }
+                }
+
+
+  	},
+  	error : function(err) {
+  		$( "#fail-dialog>p" ).html(err.message);
+  		$( "#fail-dialog" ).dialog({
+  			modal: true,
+  			buttons: {
+  				"关闭" : function(){
+  					$(this).dialog( "close" );
+  				}
+  			}
+  		});
+  	}
+  });
+
+    //这个用来做事件的
+    var tab = new auiTab({
+        element : document.getElementById("footer")
+    }, function(ret) {
+        if (ret) {
+            if (ret.index == 5) {
+                window.location = "member.html?openId="+openId;
+                return;
+            }
+            if (ret.index == 4) {
+                window.location = "expert.html?openId="+openId;
+                return;
+            }
+            if (ret.index == 3) {
+                window.location = "quesadd.html?openId="+openId;
+                return;
+            }
+            if (ret.index == 2) {
+                window.location= "offer.html?openId="+openId;
+            }
+            if (ret.index == 1) {
+                return;
+            }
+        }
+    });
+    tab.setActive(5);
+});
+
+function applyexpert(openIdv){
+	window.location = "../wx/web/expert/applyexpert?openId="+openId;
+}
+
+
+
+
+</script>
+</html>

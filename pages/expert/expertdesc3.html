@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>专家详情</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="../../static/aui/mycss/aui.css">
+    <style>
+        body{
+            overflow-x:hidden;
+        }
+        .expert-box{
+            background: #f7f7f7;
+        }
+        .expert-icon{
+            width: 100%;
+        }
+        .expert-icon>img{
+            width: 100%;
+        }
+        .expert-text{
+            padding: 0.5rem;
+            background: #fff;
+            margin: 0.5rem 0 ;
+        }
+        .expert-icon1{
+            width: 100%;
+            height: 13rem;
+            position: relative;
+        }
+        .expert-icon1>img{
+            width: 100%;
+        }
+        .button-a{
+            width: 13rem;
+            height: 3rem;
+            position: absolute;
+            bottom: 0.5rem;
+            left: 22%;
+        }
+        .button-tw{
+            border-radius: 10%;
+            width: 8rem;
+            height: 2rem;
+            line-height: 2rem;
+            background: #931a02;
+            float: left;
+            margin: 0 auto;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+        }
+        .button-gz{
+            border-radius: 10%;
+            width: 3rem;
+            color: #fff;
+            height: 2rem;
+            line-height: 2rem;
+            background: #931a02;
+            margin-left: 0.5rem;
+            float: left;
+            text-align: center;
+        }
+
+
+    </style>
+</head>
+<body>
+<section class="expert-box" id="sectionfirst">
+</section>
+</body>
+<script type="text/javascript" src="../../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+var openIdv = "${openId}";
+var expertIdv = "${expertid}";
+
+function initpage(){
+	
+         var params = {
+        	    openId: openIdv,
+        	    expertId:expertIdv
+             }
+        $.ajax({
+          	type : "POST",
+          	url : "../../wx/web/member/getexpert",
+          	dataType : 'json',
+          	async: true,
+          	contentType : "application/json",
+          	//data : "{expertId:"+expertIdv+"}",
+          	data : JSON.stringify(params),
+          	success : function(ro) {
+          		
+          		if(ro.code == 200){
+                       //alert("success");
+                       //return;
+                       var arthStatusstr = "专家";
+             			if(ro.datas.memType == '1'){
+           			      if(ro.datas.authStatus == 1){
+           			    	  arthStatusstr = "认证专家";
+            			   }else{
+            			      arthStatusstr = "专家";
+            			   }
+           		}
+             //alert(arthStatusstr);
+           var rows = "";
+     rows = rows + `<div class="expert-icon">
+             	        <img src="../../static/aui/myimages/expert-img.png" alt="">
+             	    </div>
+             	    <div class="expert-text">
+             	        <p>`+ro.datas.name+arthStatusstr+ro.datas.desc+`</p>
+             	    </div>
+             	    <div class="expert-icon1">
+             	        <img src="../../static/aui/myimages/expert-img1.png" alt="">
+             	        <div class="button-a clearfix">
+             	            <div class="button-tw" onclick="toquestion(`+ro.datas.id+`)">我要提问</div>
+             	            <div class="button-gz" onclick="tofocus(`+ro.datas.id+`)">关注</div>
+             	        </div>
+             	    </div>`;
+             			
+             		//return;
+                    $("#sectionfirst").append(rows);
+                    return;
+          		}
+          	},
+          	error : function(err) {
+
+          	}
+          });
+	
+}
+
+function toquestion(idv){
+	//alert(idv);
+	//return;
+	location.href = "../../wx/web/question/expquesadd?openId=${openId}&expertid="+idv;
+}
+
+function tofocus(idv){
+	//alert(idv);
+	//return;
+	//location.href = "../../wx/web/focus/focusexpert?openId=${openId}&expertid="+idv;
+    var params = {
+    	    openId: openIdv,
+    	    expertid:idv
+         }
+    
+    $.ajax({
+      	type : "post",
+      	url : "../../wx/web/focus/focusexpert",
+      	dataType : 'json',
+      	async: true,
+      	contentType : "application/json",
+      	//data : "{expertId:"+expertIdv+"}",
+      	data : JSON.stringify(params),
+      	success : function(ro) {
+      		
+      		if(ro.code == 200){
+                alert("关注成功");
+                return;
+      		}
+      		if(ro.code == 1){
+                alert("您已关注这位专家");
+                return;
+      		}
+      	},
+      	error : function(err) {
+            alert("调用异常");
+      	}
+      });
+	
+
+}
+$(function(){
+    //alert("666666");
+	  initpage();
+});
+</script>
+</html>

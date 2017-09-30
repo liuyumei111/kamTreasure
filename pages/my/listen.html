@@ -1,0 +1,329 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<meta name="format-detection"
+	content="telephone=no,email=no,date=no,address=no">
+<title>我听</title>
+<link rel="stylesheet" type="text/css" href="../../static/aui/mycss/aui.css" />
+<style type="text/css">
+    .user-info {
+        background-color: #ffffff;
+        padding: 0.75rem 0;
+    }
+    img.avatar {
+        display: block;
+        margin: 0 auto;
+        width: 20%;
+    }
+    .aui-list .aui-list-header {
+        background-color: #ffffff;
+        line-height: 1.2rem;
+    }
+    .aui-list .aui-list-item {
+        background-color: #f8f6ef;
+    }
+     .aui-bar-tab-item>.bar-tab-label-wen{
+        /*width: 3em;*/
+        height: 2rem;
+        background: #931a02;
+        border-radius: 0.3rem;
+        text-align: center;
+        line-height: 2rem;
+        color: #fff;
+        font-size: 22px;
+    }
+.tuijian{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-question.png")no-repeat;
+    background-size: cover;
+}
+.xuanshagn{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-offer.png")no-repeat;
+    background-size: cover;
+}
+.zhuanjia{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-expert.png")no-repeat;
+    background-size: cover;
+}
+.wode{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../../static/aui/myimages/icon-member.png")no-repeat;
+    background-size: cover;
+}
+    .box{
+        width: 100%;
+        padding: 0.6rem;
+        background: #f7f7f7;
+    }
+    .voice>i{
+        position: relative;
+        top:0;
+        left: 42%;
+    }
+	.abc{
+		font-size: 0.7rem !important;
+		color: #ff0000;
+		position: absolute;
+		right: .5rem;
+		top: 2rem;
+		margin: 0;
+	}
+    .card-list{
+        position: relative;
+    }
+    .card-list>b{
+        position: absolute;
+        top: -0.5rem;;
+        right: -0.5rem;
+        background: url("../../static/aui/myimages/listened.png") no-repeat;
+        background-size: contain;
+        width: 30px;
+        height: 30px;
+    }
+    .answer-btn{
+        width: 100%;
+        height: 3em;
+    }
+    .answer-button {
+        width: 6rem;
+        height: 2rem;
+        background: #931a02;
+        border-radius: 0.4rem;
+        margin: 0 auto;
+        text-align: center;
+        line-height: 2rem;
+        color: #fff;
+        border:none;
+    }
+    .aui-card-list.card-list{
+        border-top: 0.3rem solid #eef0f3;
+    }
+</style>
+</head>
+<body>
+	<div class="aui-content box" id="pagefirst">
+        <!--已答详情-->
+    </div>
+</body>
+<script type="text/javascript" src="../../static/aui/myscript/jquery-1.8.3.min.js" ></script>
+<script type="text/javascript">
+    var url="http://192.168.199.148:8080/DiscuzServer";
+    //获取页面传递参数
+    let urs=window.location.search;
+    let strs=urs.substring(1);
+    let silp=strs.split('&');
+    let res={};
+    for (let i=0;i<silp.length;i++){
+        res[silp[i].split("=")[0]]=silp[i].split("=")[1];
+    }
+    var openId=res.openId;//openid
+	//var openId="oCmyxw_i-xLJwLQx6E8lGEg9YcyU"
+
+// `+answerList(i.id)+`
+    function aswered() {
+        var rows="";
+        var prams={
+            openId:openId,
+            answeredStatus:1,//0 是未回复  1 已回复
+            page:1,
+            rows:100,
+            sort:'id'
+        };
+        $.ajax({
+            type : "GET",
+            url : url+"/wx/web/question/getmylistenquestionlist",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data :prams,
+            success : function(ro) {
+                if(ro.code == 200){
+                    //console.log(ro)
+                    //pageNo = ro.page.pageNo;
+                    console.log(ro.datas);
+                    $.each(ro.datas,function (vo,i) {
+                        rows+=`<div class="aui-card-list card-list" data-id="`+i.id+`">
+                            <div class="aui-card-list-header aui-card-list-user ab-position">
+                            <div class="aui-card-list-user-avatar"><img src=`+i.picUrl+` style="width:2rem" class="aui-img-round"></div><div class="aui-card-list-user-name">
+                            <div class="aui-text-info"><span>`+i.memName+`</span></div>
+                           </div> <div class="aui-card-list-user-info text-light">收藏爱好者</div> <div class="aui-font-size-14 text-light abc">赏金￥<span>`+i.questionFee/100+`</span></div></div>
+                            <div class="aui-card-list aui-border-t"><div class="aui-card-list-content"> <div class="aui-row aui-row-padded">
+                             `+imgs(i.id)+`
+                            </div></div><div class="aui-card-list-content-padded aui-padded-b-5" style="padding-left: 1.5rem">`+i.quesTitle+`</div> </div>
+                             <b></b>
+                            </div>
+                             `
+
+                    });
+                }
+            },
+            error : function(err) {
+                alert(err.message);
+            }
+        });
+        return rows;
+    }
+    //获取回答列表
+    function answerList(id) {
+
+        var rows="";
+        var prams={
+            openId:openId,
+            questionid:id,
+        }
+        $.ajax({
+            type : "GET",
+            url : url+"/wx/web/answer/getexpertanswerviewlist",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data : prams,
+            success : function(ro) {
+                //alert(ro.code)
+                if(ro.code == 200) {
+
+                    $.each(ro.datas, function (vo, i) {
+                        console.log(ro.datas);
+                        if (i.answerType== "1") {
+                            rows += `
+            <div class="item-user height-5">
+                <div class="aui-card-list-header aui-card-list-user padding-left">
+                    <div class="aui-card-list-user-info clearfix text-light padding-bottom">
+                        <span>`+i.expertName+` </span>&nbsp;&nbsp;
+                        <span>`+i.recCreateDt.substr(0,19)+`</span>&nbsp;&nbsp;
+                    </div>
+                    <div class="aui-card-list-user-avatar">
+                        <img src="`+i.expertPicUrl+`" style="width:2rem" class="aui-img-round">
+                    </div>
+                    <div class="aui-card-list-user-name">
+                        <div class="aui-text-info">
+                         <audio preload="auto" onclick="playaudio(this)">
+                                <source src=`+i. voiceMp3Url+` type="audio/mpeg" />
+                            </audio>
+                            <span class="voice">
+                                <i></i>
+                            </span>
+                            <span class="second">`+i.dataLongs+`s</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>`
+                        } else {
+                            rows += `<div class="item-user height-5"><div class="aui-card-list-header aui-card-list-user padding-left">
+                    <div class="aui-card-list-user-info clearfix text-light padding-bottom">
+                        <span>`+i.expertName+` </span>&nbsp;&nbsp;
+                        <span>`+i.recCreateDt.substr(0,19)+`</span>&nbsp;&nbsp;
+                    </div>
+                    <div class="aui-card-list-user-avatar">
+                        <img src="`+i.expertPicUrl +`" style="width:2rem" class="aui-img-round">
+                    </div>
+                    <div class="aui-card-list-user-name">
+                        <div>
+                            <p>`+i.textContent+`</p>
+                        </div>
+                    </div>
+
+                </div></div>`
+                        }
+                    });
+                }
+            },
+            error : function(err) {
+                alert(err.message);
+            }
+        })
+        return rows;
+    }
+    //获取图片
+    function imgs(id) {
+        //获取图片接口
+        var imgprams={
+            openId : openId,
+            webquestionid :id
+        };
+        var imgstrs="";
+        $.ajax({
+            type : "GET",
+            url : url+"/wx/web/question/getquestionimglist",
+            dataType : 'json',
+            async: false,
+            contentType : "application/json",
+            data : imgprams,
+            success : function(ro) {
+                $.each(ro.datas, function(index, vo){
+                    if(vo.attachType=="img"){
+                        imgstrs+=`<div class="aui-col-xs-4" data-imgsrc="`+vo.attachUrl+`" style="background-image: url(`+vo.attachUrl+`)" onclick="getPicInfo(this)">
+                                        </div>`
+                    }else {
+                        imgstrs+=`<div class="aui-col-xs-4 video-content">
+                        <video onclick="reduction(this)" id="video" width="100%" height="100%" style="background: #fff">
+                            <source src=`+vo.attachUrl+` type="video/mp4"/>
+                            <source src=`+vo.attachUrl+` type="video/webM"/>
+                            <source src=`+vo.attachUrl+` type="video/ogg"/>
+                        </video>
+                        <div class="cover">
+                            <b></b>
+                         </div>
+                        </div>`;
+                    }
+                });
+            },
+        });
+        return imgstrs
+    }
+    //跳转问题详情页
+    $("div").on('click','.aui-card-list',function () {
+        let $this=$(this);
+        let id=$this.attr("data-id");
+        //alert(id);
+        console.log(id);
+        window.location.href="expertquestiondesc.html?openId="+openIdv+"&id="+id;
+    });
+
+    $("div").on('click','.aui-col-xs-4',function () {
+        return false;
+    });
+    //调用微信预览图片接口
+    function getPicInfo(obj){
+        //var imgObj = Array.prototype.slice.call($('.aui-col-xs-4 img'));   //获取图文中所有的img标签对象
+        var $this=$(obj);
+        var nowsrc=$this.attr('data-imgsrc');
+        var imgObj=Array.prototype.slice.call($this.parent().find('.aui-col-xs-4'));
+        console.log(nowsrc);
+        console.log(imgObj);
+        var imgs=[];
+        $.each(imgObj,function (el,index) {
+            imgs.push(index.dataset.imgsrc)
+        })
+        WeixinJSBridge.invoke("imagePreview",{
+                    "urls":imgs,
+                    "current":nowsrc
+                });
+    }
+//    //播放语音
+//    $("div").on('click','.aui-text-info',function () {
+//        var $this=$(this);
+//        var audio=$this.find('audio');
+//        //console.log($this.play());
+//        audio[0].play()
+//    });
+    $(function () {
+        $("#pagefirst").append(aswered());
+    })
+</script>
+</html>

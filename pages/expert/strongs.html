@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>专家类别</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="../../static/aui/mycss/aui.css">
+    <style>
+        .my-content{
+            background: #f7f7f7;
+            /*background: red;*/
+         }
+        .my-content>ul{
+            margin-top: 0.4rem;
+        }
+        .my-content>ul>li{
+           border-bottom: 0.3rem solid #f7f7f7;
+            background: #fff;
+            padding: 0.4rem;
+            width: 100%;
+        }
+        .my-content-left{
+            float: left;
+            width: 20%;
+        }
+        .my-content-left>img{
+            width: 3rem;
+            height: 3rem;
+        }
+        .my-content-right{
+            display: inline-block;
+            width: 80%;
+            padding-top: 0.2rem;
+            padding-left: 0.2rem;
+        }
+      .book1{
+          font-size: 16px;
+          font-weight: 600;
+          padding-bottom: 0.3rem;
+          display: inline-block;
+
+        }
+        .book2{
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<section class="my-content">
+    <ul id="stronglist">
+    </ul>
+</section>
+</body>
+<script type="text/javascript" src="../../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+//var openIdv = "${openId}";
+var url="http://192.168.199.148:8080/DiscuzServer";
+//获取页面传递参数
+let urs=window.location.search;
+let strs=urs.substring(1);
+let silp=strs.split('&');
+let res={};
+for (let i=0;i<silp.length;i++){
+    res[silp[i].split("=")[0]]=silp[i].split("=")[1];
+}
+var openIdv=res.openId;//openid
+
+function initstrongs(){
+//动态添加擅长分类的类型 并添加事件
+$.ajax({
+  	type : "GET",
+  	url : url+"/wx/web/expert/stronglist",
+  	dataType : 'json',
+  	async: true,
+  	contentType : "application/json",
+  	data : {openId:openIdv},
+  	success : function(ro) {
+  		if(ro.code == 200){
+  			//alert(ro.code);
+  			//return;
+  			var rows="";
+  	  		$.each(ro.datas, function(index, vo){
+  	  			
+  	                rows=rows+`<li data-href=`+vo.id+` class="clearfix">
+                                     <div class="my-content-left">
+                                         <img src=`+vo.picUrl+` alt="">
+                                     </div>
+                                     <div class="my-content-right">
+                                         <span class="book1">`+vo.strongName+`</span>
+                                         <br>
+                                        <span class="book2">`+vo.strongName+`</span>
+                                     </div>
+                               </li>`;
+  	  		});
+  	  	    $("#stronglist").append(rows);
+  		}
+
+  	    //动态添加事件2
+   		var listItem=document.querySelectorAll('#stronglist > li');
+  		for (var i =0;i<listItem.length-1;i++){
+  		    listItem[i].onclick=function () {
+  		        var dataHref = this.getAttribute('data-href');
+  		       // alert(dataHref);
+  		       // return;
+  		        location.href = "searchexperts.html?openId="+openIdv+"&searchid="+dataHref;
+  		    }
+  		}
+  	    
+  	},
+  	error : function(err) {
+  		  alert(err.message);
+  	}
+  });
+  
+}
+$(function(){
+	//alert("成功");
+	initstrongs()
+});
+</script>
+</html>

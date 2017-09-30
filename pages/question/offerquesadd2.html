@@ -1,0 +1,655 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+<title>发布悬赏提问</title>
+<link rel="stylesheet" type="text/css" href="../../static/aui/mycss/aui.css" />
+    <style type="text/css">
+        .aui-bar {
+            margin-top: 0.75rem;
+        }
+
+        .aui-list-item-text {
+            position: absolute;
+            top: 0;
+            right: 0.5rem;
+            width: 6rem;
+            height: 1rem;
+        }
+
+        .item-text-money {
+            color: #ff0000;
+        }
+
+        .aui-list-item {
+            position: relative;
+        }
+
+        .aui-btn-info {
+            background: #931a02;
+            width: 7rem;
+            height: 3rem;
+            margin: 0 auto;
+            display: block;
+            line-height: 3rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            font-size: 16px;
+        }
+
+        .item-class {
+            width: 100%;
+            height: 8rem;
+            background: #fff;
+            margin-bottom: 0.3rem;
+        }
+
+        .back {
+            background: #931a02;
+            color: #fff !important;
+        }
+
+        .item-class-text {
+            margin: 1.5rem 0 0 0.8rem;
+            font-size: 16px;
+            color: #040404;
+            padding: 0.8rem 0 0.5rem 0.4rem;
+        }
+
+        .item-class-list {
+            padding-left: 1rem;
+        }
+
+        .list-li {
+            float: left;
+            width: 4rem;
+            height: 2.2rem;
+            margin-right: 0.5rem;
+            border: 0.15rem solid #931a02;
+            border-radius: 0.3rem;
+            text-align: center;
+            line-height: 2rem;
+            margin-top: 0.4rem;
+            font-size: 12px;
+        }
+
+        .ask {
+            width: 100%;
+            height: 17rem;
+            /*background: darkkhaki;*/
+            margin-top: 0.5rem;
+        }
+
+        .detail-text {
+            width: 94%;
+            height: 10rem;
+            position: relative;
+            margin: 1.2em auto 0;
+
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 16px;
+            outline: none;
+            background: #fff;
+            padding: 0.3rem 0 0 0.8rem;
+        }
+
+        .container {
+            margin: 0px;
+            width: 100%;
+            height: 9rem;
+            overflow: auto;
+            clear: both;
+        }
+
+        .z_photo {
+            width: 94%;
+            height: 8rem !important;
+            padding: 1.3rem 0.3rem 0 0.3rem;
+            overflow: auto;
+            clear: both;
+            margin: 0 auto;
+            /*border: 1px solid #555;*/
+            background: #fafafa;
+        }
+
+        .z_photo img {
+            width: 5rem;
+            height: 5rem;
+        }
+
+        .z_addImg {
+            float: left;
+            margin-right: 0.2rem;
+        }
+
+        .z_file {
+            width: 6rem;
+            height: 6rem;
+            background: url(../../static/aui/myimages/z_add.png) no-repeat;
+            background-size: 100% 100%;
+            float: left;
+            margin-right: 0.2rem;
+        }
+
+        .z_file input::-webkit-file-upload-button {
+            width: 1rem;
+            height: 1rem;
+            border: none;
+            position: absolute;
+            outline: 0;
+            opacity: 0;
+        }
+
+        .z_file input#file {
+            display: block;
+            width: auto;
+            border: 0;
+            vertical-align: middle;
+        }
+
+        /*遮罩层*/
+        .z_mask {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            display: none;
+        }
+
+        .z_alert {
+            width: 3rem;
+            height: 2rem;
+            border-radius: .2rem;
+            background: #fff;
+            font-size: .24rem;
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -1.5rem;
+            margin-top: -2rem;
+        }
+
+        .z_alert p:nth-child(1) {
+            line-height: 1.5rem;
+        }
+
+        .z_alert p:nth-child(2) span {
+            display: inline-block;
+            width: 49%;
+            height: .5rem;
+            line-height: .5rem;
+            float: left;
+            border-top: 1px solid #ddd;
+        }
+
+        .z_cancel {
+            border-right: 1px solid #ddd;
+        }
+
+        .aui-list-item {
+            height: 5rem;
+            /*padding-left: 1rem;*/
+        }
+
+        .font-1 {
+            font-size: 18px;
+        }
+
+        .my-list-item {
+            padding-top: 2.3rem;
+        }
+
+        .Reward {
+            width: 100%;
+            padding: 0 1rem;
+            margin-bottom: 1.5rem;
+
+        }
+
+        .Reward > ul > li {
+            margin-bottom: 0.4rem;
+            background: #fff;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 60%;
+            border-radius: 10px; /*这个属性设置使填充进度条时的图形为圆角*/
+            margin: 0 0.6rem 0 0.6rem;
+        }
+
+        body {
+            background: #fafafa;
+        }
+
+        .padding-t {
+            padding: 0.8rem 0 0.8rem 0;
+        }
+
+        .border-b-text {
+            font-size: 16px;
+            color: #040404;
+            margin-bottom: 0.4rem;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            height: 0.15rem;
+            background: #931a02;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            margin-top: -8.5px; /*使滑块超出轨道部分的偏移量相等*/
+            background: #ffffff;
+            border-radius: 50%; /*外观设置为圆形*/
+            border: solid 0.125em rgba(205, 224, 230, 0.5); /*设置边框*/
+            box-shadow: 0 .125em .125em #3b4547; /*添加底部阴影*/
+        }
+        .padding-t > span {
+            font-size: 12px;
+            color: #ff0000;
+        }
+        b{
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+<div class="ask">
+    <div class="detail-text">
+        <textarea placeholder="这里输入您的问题" id="textareaid" name="quesTitle"></textarea>
+    </div>
+    <form action="../../wx/web/question/osssaveimages" id="imageform" enctype="multipart/form-data" method="post">
+        <!--添加照片-->
+        <div class="container">
+            <!--    照片添加    -->
+            <input type="hidden" name="webquestionid" id="webquestionid" value=""/>
+            <input type="hidden" name="openId" id="webopenId" value="${openId }"/>
+            <div class="z_photo clearfix">
+                <div class="z_file">
+                    <input type="file" name="file" id="file" value="" accept="image/*" multiple onchange="imgChange('z_photo','z_file');" />
+                </div>
+            </div>
+
+            <!--遮罩层-->
+            <div class="z_mask">
+                <!--弹出框-->
+                <div class="z_alert">
+                    <p>确定要删除这张图片吗？</p>
+                    <p> <span class="z_cancel">取消</span> <span class="z_sure">确定</span> </p>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--问题分类-->
+<div class="item-class">
+    <h2 class="item-class-text">问题分类</h2>
+    <ul class="item-class-list" id="quesTypelist">
+        <!--<li class="list-li back">科技</li>
+            <li class="list-li">民生</li>
+            <li class="list-li">娱乐</li> -->
+    </ul>
+</div>
+<!--悬赏-->
+<div class="Reward">
+    <ul>
+        <li class="padding-t">
+            <p class="border-b-text">悬赏金额</p>
+            <input oninput="myfun1()" type="range" value="20" max="100" min="1" step="1"
+                   id="range1"/>
+            <span>单位：<b id="range1-1">5</b>元</span>
+        </li>
+        <li class="padding-t">
+            <p class="border-b-text">悬赏期限</p>
+            <input oninput="myfun2()" type="range" value="1" max="50" min="1" step="1" id="range2"/>
+            <span>单位：<b id="range1-2">12小时</b></span>
+        </li>
+    </ul>
+
+</div>
+<!--发布-->
+<div class="aui-btn aui-btn-info" onclick="formsubmit()">发布</div>
+
+</body>
+<script type="text/javascript" src="../../static/aui/script/api.js" ></script>
+<script type="text/javascript" src="../../static/aui/script/aui-toast.js" ></script>
+<script type="text/javascript" src="../../static/aui/myscript/aui-range.js" ></script>
+<script type="text/javascript" src="../../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<script src="../../static/aui/myscript/dateapi.js"></script>
+<script type="text/javascript">
+    var url="http://192.168.199.148:8080/DiscuzServer";
+    //获取页面传递参数
+    let urs=window.location.search;
+    let strs=urs.substring(1);
+    let silp=strs.split('&');
+    let res={};
+    for (let i=0;i<silp.length;i++){
+        res[silp[i].split("=")[0]]=silp[i].split("=")[1];
+    }
+    var openIdv=res.openId;//openid
+    //var openIdv = "${openId}";
+    var questionid = 0;
+
+    function myfun1() {
+        var a = $('#range1').val()
+        if (a < 5) {
+            $('#range1-1').html(5)
+        } else if (a > 5 && a < 10) {
+            $('#range1-1').html(10)
+        } else if (a > 10&&a<20) {
+            $('#range1-1').html(20)
+        }else if (a > 20&&a<50) {
+            $('#range1-1').html(50)
+        }else if (a > 50&&a<100) {
+            $('#range1-1').html(100)
+        }
+    }
+
+    function myfun2() {
+        var a = $('#range2').val();
+        if (a < 5) {
+            $('#range1-2').html(12+'小时')
+        } else if (a > 5 && a < 10) {
+            $('#range1-2').html(1+'天')
+        } else if (a > 10&&a<20) {
+            $('#range1-2').html(2+'天')
+        }else if (a > 20&&a<30) {
+            $('#range1-2').html(3+'天')
+        }else if (a > 30&&a<50) {
+            $('#range1-2').html(5+'天')
+        }
+    }
+
+
+    $(function(){
+
+        //动态添加擅长分类的类型 并添加事件
+        $.ajax({
+            type : "POST",
+            url : url+"/wx/web/question/gettypelist",
+            dataType : 'json',
+            async: true,
+            contentType : "application/json",
+            data : {openId:openIdv},
+            success : function(ro) {
+                if(ro.code == 200){
+                    var rows="";
+                    $.each(ro.datas, function(index, vo){
+                        if(index == 0){
+                            rows =rows + "<li class='list-li back' num="+vo.id+" name='typeName'>"+vo.typeName+"</li>";
+                        }else{
+                            rows =rows + "<li class='list-li' num="+vo.id+" name='typeName'>"+vo.typeName+"</li>";
+                        }
+                    });
+                    $("#quesTypelist").append(rows);
+                }
+                //下面要动态添加事件把这些动作添加到选项卡上
+                $.each($('.list-li'),function(index,item){
+                    $(item).on('click',function(){
+                        $(this).addClass('back').siblings().removeClass('back');
+                    })
+                });
+            },
+            error : function(err) {
+                alert(err.message);
+            }
+        });
+
+
+    });
+
+    //在两个滑动按钮加上事件
+    var range = new auiRange({
+        element : document.getElementById("range")
+    }, function(ret) {
+        document.getElementById("range-value-1").textContent = ret.value;
+    })
+    var range2 = new auiRange({
+        element : document.getElementById("range2")
+    }, function(ret) {
+        document.getElementById("range-value-2").textContent = ret.value;
+    })
+
+    apiready = function(){
+        api.parseTapmode();
+    }
+    var toast = new auiToast();
+    function showDefault(type){
+        switch (type) {
+            case "success":
+                toast.success({
+                    title:"提交成功",
+                    duration:2000
+                });
+                break;
+            case "fail":
+                toast.fail({
+                    title:"提交失败",
+                    duration:2000
+                });
+                break;
+            case "loading":
+                toast.loading({
+                    title:"加载中",
+                    duration:2000
+                },function(ret){
+                    console.log(ret);
+                    //setTimeout(function(){
+                    //    toast.hide();
+                    //}, 3000)
+                });
+                break;
+            default:
+                // statements_def
+                break;
+        }
+    }
+
+    //添加图片控制=======图片添加类
+    function imgChange(obj1, obj2) {
+        //获取点击的文本框
+        var file = document.getElementById("file");
+        //存放图片的父级元素
+        var imgContainer = document.getElementsByClassName(obj1)[0];
+        //获取的图片文件====文本框可以添加多个图片
+        var fileList = file.files;
+        //文本框的父级元素
+        var input = document.getElementsByClassName(obj2)[0];
+        var imgArr = [];
+        //遍历获取到得图片文件
+        for (var i = 0; i < fileList.length; i++) {
+            var imgUrl = window.URL.createObjectURL(file.files[i]);
+            imgArr.push(imgUrl);
+            var img = document.createElement("img");
+            img.setAttribute("src", imgArr[i]);
+            var imgAdd = document.createElement("div");
+            imgAdd.setAttribute("class", "z_addImg");
+            imgAdd.appendChild(img);
+            imgContainer.appendChild(imgAdd);
+        };
+        //不知道imgRemove()作用
+        imgRemove();
+    };
+    //图片添加删除事件
+    function imgRemove() {
+        var imgList = document.getElementsByClassName("z_addImg");
+        var mask = document.getElementsByClassName("z_mask")[0];
+        var cancel = document.getElementsByClassName("z_cancel")[0];
+        var sure = document.getElementsByClassName("z_sure")[0];
+        for (var j = 0; j < imgList.length; j++) {
+            imgList[j].index = j;
+            imgList[j].onclick = function() {
+                var t = this;
+                mask.style.display = "block";
+                cancel.onclick = function() {
+                    mask.style.display = "none";
+                };
+                sure.onclick = function() {
+                    mask.style.display = "none";
+                    t.style.display = "none";
+                };
+
+            }
+        };
+    };
+
+
+
+
+    //form提交申请
+    //var itemval = $(item).attr("num");
+    //var itemname = $(item).text();
+    function formsubmit(){
+        //总的思路是：1 先提交表单位 保存问题   返回问题ID
+        //        2再查询图片列表 发起保存图片申请，在java端保存照片到云服务器
+        //        3 把返回的访问地址保存到本地附件数据
+
+        //全局合格检查
+        var flag = false;
+
+        //节点1====================================第一部分跳转
+        var expType = 0;
+        var items ="";
+        $.each($("li[name='typeName']"), function (index, item) {
+            if ($(item).attr("class") == 'list-li back') {
+                expType = $(item).attr("num");
+            }
+        });
+
+        //alert("expType:"+expType);
+        //return;
+
+        //节点2====================================第二部分跳转
+
+        var areavalue = $("#textareaid").val();
+        //alert("悬赏内容:"+ areavalue);
+        // return;
+
+        var offerfee = $("#range-value-1").text();
+        //alert("悬赏金额:"+offerfee);
+        //return;
+
+        var offertime = $("#range-value-2").text();
+        //alert("悬赏期限:"+offertime);
+        //return;
+        //转化悬赏过期时间
+        var x = new Date().format('yyyy-MM-dd hh:mm:ss');
+        var timev = new Date(x.replace("-","/"));
+        var b = 60*offertime; //有限分钟数
+        timev.setMinutes(timev.getMinutes() + b, timev.getSeconds(), 0);
+        var timevstr = timev.format('yyyy-MM-dd hh:mm:ss');
+        //alert("过期时间是："+timevstr);
+        //return;
+        //var finaltime = timev.getDate();
+        //节点3====================================第三部分跳转
+        //发起请求保存悬赏
+        //传输对象的形式
+        var parms = {
+            memOpenId : openIdv,
+            quesTitle : areavalue,
+            questionFee : offerfee,
+            expirestr : timevstr,
+        };
+        //alert(JSON.stringify(parms));
+        //return;
+        $.ajax({
+            dataType : "json",
+            type : "POST",
+            url : url+"/wx/web/question/offersave",
+            data : parms,
+            async: false,//同步调用
+            success : function(ro) {
+                if(ro.code == 200){
+                    questionid = ro.datas.id;
+                    //alert("questionid:"+questionid);
+                    //return;
+                }else{
+                    alert(ro.code);
+                }
+            },
+            error : function(err) {
+                alert("调用异常");
+            }
+        });
+
+        $("#webquestionid").val(questionid);
+        showDefault('loading');
+        $("form").submit();
+        //toast.hide();
+        return;
+
+    }
+    //questionid 设傎
+    //alert(questionid);
+    //$("#webquestionid").val(questionid);
+    //alert($("#webquestionid").val());
+    //return;
+    //提交表意单
+    //$("#imageform").submit();
+    //window.location = "../../wx/web/main/member?openId=${openId}";
+    //$("#imageform").submit(function(e){
+    //       alert("Submitted");
+    // });
+
+    //只能接收到数字值，文件值接收不到
+
+    /*     var imagelist = document.getElementById("file").files;
+     //alert(inagelist);
+     //return;
+     //调用图片文件，发送到应用服务器，再传到oss云服务器
+     var formdata = new FormData();
+     formdata.append("imageFile", imagelist);
+     formdata.append("questionId", questionid);
+     //图片正式开始上传
+     $.ajax({
+     type: "POST",
+     dataType: "json",
+     url: "../../wx/web/question/saveimages",
+     data: formdata,
+     async: false,
+     processData: false,
+     //contentType : "multipart/form-data",
+     contentType: false,
+     success: function (ro) {
+     alert("返回："+ro);
+     if (ro.code == 200) {
+     //图片上传成功回调
+     alert("图片上传成功");
+     }
+     else {//图片未上传成功回调
+     alert("图片上传未成功:"+ro.message);
+     }
+     },
+     error: function (err) {
+     //服务器连接失败报错处理
+     alert("error");
+     }
+     });*/
+
+
+
+
+
+
+
+</script>
+</html>

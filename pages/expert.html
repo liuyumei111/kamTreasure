@@ -1,0 +1,423 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<meta name="format-detection"
+	content="telephone=no,email=no,date=no,address=no">
+<title>专家</title>
+<link rel="stylesheet" type="text/css" href="../static/aui/mycss/aui.css" />
+
+<style type="text/css">
+	#pagefirst{
+		padding-bottom: 50px;
+	}
+    .user-info {
+        background-color: #ffffff;
+        padding: 0.75rem 0;
+    }
+    img.avatar {
+        display: block;
+        margin: 0 auto;
+        width: 20%;
+    }
+    .aui-list .aui-list-header {
+        background-color: #ffffff;
+        line-height: 1.2rem;
+    }
+    .aui-list .aui-list-item {
+        background-color: #f8f6ef;
+    }
+     .aui-bar-tab-item>.bar-tab-label-wen{
+        /*width: 3em;*/
+        height: 2rem;
+        background: #931a02;
+        border-radius: 0.3rem;
+        text-align: center;
+        line-height: 2rem;
+        color: #fff;
+        font-size: 22px;
+    }
+.tuijian{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../static/aui/myimages/icon-question.png")no-repeat;
+    background-size: cover;
+}
+.xuanshagn{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../static/aui/myimages/icon-offer.png")no-repeat;
+    background-size: cover;
+}
+.zhuanjia{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../static/aui/myimages/icon-expert.png")no-repeat;
+    background-size: cover;
+}
+.wode{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    background: url("../static/aui/myimages/icon-member.png")no-repeat;
+    background-size: cover;
+}
+	.banner{
+		width: 100%;
+		height: 5rem;
+		margin-top: 0.5rem;
+		position: relative;
+	}
+.banner>img{
+	width: 100%;
+	height: 100%;
+}
+.banner>span{
+	color: #fff;
+	position: absolute;
+	top: 1.5rem;
+	right: 3.5rem;
+	font-size: 1rem;
+}
+.banner>i{
+	width: 2rem;
+	height: 2rem;
+	position: absolute;
+	top: 1.5rem;
+	left: 4rem;
+	background: url("../static/aui/myimages/icon-search.png")no-repeat;
+	background-size: contain;
+}
+	.zj-detail{
+		width: 100%;
+		background: #fff;
+	}
+.zj-detail>li{
+	width: 100%;
+	height: 5rem;
+	background: #fff;
+	line-height: 5rem;
+}
+.zj-detail>li>.zj-icon{
+	width: 20%;
+	height: 3rem;
+	padding: 0.5rem 0 0 0.8rem;
+	box-sizing: content-box;
+	float: left;
+}
+.zj-detail>li>.zj-text {
+	float: right;
+	width: 80%;
+	height: 100%;
+	background: chartreuse;
+}
+.text-overflow-fag{
+	overflow:hidden;
+	text-overflow:ellipsis;
+	display:-webkit-box;
+	-webkit-box-orient:vertical;
+	-webkit-line-clamp:2;
+	}
+	.user-header-img{
+		width: 3.5rem;
+		float: left;
+		margin-right: 0.5rem;
+		/* background: red; */
+		height: 3.5rem;
+		border-radius: 50%;
+		/*border: 1px solid red;*/
+		position: relative;
+	}
+	.bottom-border{
+		border-bottom: 1px solid #eee;
+	}
+	.content-box{
+		box-sizing:content-box;
+		height: 3.5rem;
+	}
+	.user-weibo{
+		width: 0.8rem;
+		height: 0.8rem;
+		display: inline-block;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		background: url("../static/aui/myimages/v.png")no-repeat;
+		background-size: contain;
+	}
+	#loading{
+		position: fixed;
+		height: 100%;
+		opacity: 1;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background-color: #fff;
+		z-index: 1999;
+	}
+	#loading img{
+		position: absolute;
+		left: 50%;
+		top:50%;
+		margin-top: -21px;
+		margin-left: -21px;
+	}
+
+</style>
+</head>
+<body>
+<div id="loading">
+	<img src="../static/aui/myimages/kbloading.gif">
+</div>
+<div class="box">
+	<div class="aui-searchbar" id="first-search">
+		<div class="aui-searchbar-input aui-border-radius">
+			<i class="aui-iconfont aui-icon-search"></i> <input type="search"
+																placeholder="请输入搜索的问题" id="search-input">
+			<div class="aui-searchbar-clear-btn">
+				<i class="aui-iconfont aui-icon-close"></i>
+			</div>
+		</div>
+		<div class="aui-searchbar-btn" tapmode>取消</div>
+	</div>
+	<div class="banner">
+		<img src="../static/aui/myimages/search-banner.png" alt="">
+		<i></i>
+		<span>找分类，找专家</span>
+	</div>
+</div>
+<!--专家-->
+<ul id="pagefirst"></ul>
+<footer class="aui-bar aui-bar-tab" id="footer">
+		<div class="aui-bar-tab-item aui-active" tapmode>
+            <!--<img class="tuijian" src="../static/aui/myimages/icon-question.png"/>-->
+            <div class="icon tuijian"></div>
+			<div class="aui-bar-tab-label">推荐</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode>
+            <!--<img class="tuijian" src="../static/aui/myimages/icon-offer.png"/>-->
+            <div class="icon xuanshagn"></div>
+			<div class="aui-bar-tab-label">悬赏</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode>
+			<div class="aui-bar-tab-label bar-tab-label-wen">问</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode>
+            <!--<img class="tuijian" src="../static/aui/myimages/icon-expert.png"/>-->
+            <div class="icon zhuanjia"></div>
+			<div class="aui-bar-tab-label">专家</div>
+		</div>
+		<div class="aui-bar-tab-item" tapmode>
+            <!--<img class="tuijian" src="../static/aui/myimages/icon-member.png"/>-->
+            <div class="icon wode"></div>
+			<div class="aui-bar-tab-label">我的</div>
+		</div>
+	</footer>
+</body>
+<script type="text/javascript" src="../static/aui/script/aui-tab.js"></script>
+<script type="text/javascript" src="../static/aui/script/aui-scroll.js"></script>
+<script type="text/javascript" src="../static/aui/script/aui-dialog.js"></script>
+<script type="text/javascript" src="../static/aui/myscript/jquery-1.8.3.min.js"></script>
+<!--<script type="text/javascript" src="../static/aui/script/jweixin-1.2.0.js"></script>-->
+<script type="text/javascript">
+    //var url="http://192.168.199.148:8080/DiscuzServer";
+    var url=" http://j.ccyjs.cn/DiscuzServer";
+    //获取页面传递参数
+    let urs=window.location.search;
+    let strs=urs.substring(1);
+    let silp=strs.split('&');
+    let res={};
+    for (let i=0;i<silp.length;i++){
+        res[silp[i].split("=")[0]]=silp[i].split("=")[1];
+    }
+    var openId=res.openId;//openid
+    var Id=res.id; //wentiid
+
+
+//    var openIdv = "${openId}";
+    var pageNo = 1;
+    var pageSize = 3;
+    //var url="http://lihaimingoray.imwork.net/DiscuzServer";
+    //var myid='oCmyxw1WGsfgw0xGQpHXasTRGX6E';
+    var TuiJian=document.getElementsByClassName('tuijian')
+	apiready = function() {
+		api.parseTapmode();
+	}
+	//这个用来做事件的
+	var tab = new auiTab({
+		element : document.getElementById("footer")
+	}, function(ret) {
+        if (ret) {
+            if (ret.index == 5) {
+                window.location = "member.html?openId="+openId;
+                return;
+            }
+            if (ret.index == 4) {
+                window.location = "expert.html?openId="+openId;
+                return;
+            }
+            if (ret.index == 3) {
+                window.location = "quesadd.html?openId="+openId;
+                return;
+            }
+            if (ret.index == 2) {
+                window.location= "offer.html?openId="+openId;
+            }
+            if (ret.index == 1) {
+                return;
+            }
+        }
+	});
+    tab.setActive(4);
+	//下面是搜索用的JS代码
+	    var searchBar = document.querySelector(".aui-searchbar");
+	    var searchBarInput = document.querySelector(".aui-searchbar input");
+	    var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+	    var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+	    if(searchBar){
+	        searchBarInput.onclick = function(){
+	            searchBarBtn.style.marginRight = 0;
+	        }
+	        searchBarInput.oninput = function(){
+	            if(this.value.length){
+	                searchBarClearBtn.style.display = 'block';
+	                searchBarBtn.classList.add("aui-text-info");
+	                searchBarBtn.textContent = "搜索";
+	            }else{
+	                searchBarClearBtn.style.display = 'none';
+	                searchBarBtn.classList.remove("aui-text-info");
+	                searchBarBtn.textContent = "取消";
+	            }
+	        }
+	    }
+	    searchBarClearBtn.onclick = function(){
+	        this.style.display = 'none';
+	        searchBarInput.value = '';
+	        searchBarBtn.classList.remove("aui-text-info");
+	        searchBarBtn.textContent = "取消";
+	    }
+	    searchBarBtn.onclick = function(){
+	        var keywords = searchBarInput.value;
+	        if(keywords.length){
+	            searchBarInput.blur();
+	            //document.getElementById("first-search-keywords").textContent = keywords;
+	            //下面进行搜索
+	            //alert("搜索:"+keywords);
+	            //不进行分页查询
+	            searchpage(keywords);
+	            
+	        }else{
+	            this.style.marginRight = "-"+this.offsetWidth+"px";
+	            searchBarInput.value = '';
+	            searchBarInput.blur();
+	        }
+	   }
+	    
+	    //搜索取得认证专家的LIST
+	    function searchpage(keywordsv){
+	        //动态添加擅长分类的类型 并添加事件
+	        var prams={
+	        	openId:openId,
+	        	searchstr:keywordsv,
+	        }
+	        $.ajax({
+	          	type : "GET",
+	          	url : url+"/wx/web/expert/getlikeexperts",
+	          	dataType : 'json',
+	          	async: false,
+	          	contentType : "application/json",
+	          	data : prams,
+	          	success : function(ro) {
+	          		if(ro.code == 200){
+	          			$("#pagefirst").html("");
+
+	          			//alert("成功");
+
+ 	                    var rows="";
+	          	  		$.each(ro.datas, function(index, vo){
+	          rows = rows +`<li class="bottom-border" data-href=`+vo.id+` onclick="expertInfo(this)"><div class="aui-card-list-header aui-card-list-user content-box">
+		                            <div class="aui-card-list-user-avatar user-header-img">
+			                              <i class="user-weibo"></i>
+			                               <img src=`+vo.picUrl+` class="aui-img-round">
+		                            </div>
+	                            	<div class="aui-card-list-user-name">
+	                            		<div class="aui-text-info"><span>`+vo.name+`</span></div>
+	                            		<div class="aui-font-size-14 text-light"><span style="color: #1a1a1a">`+vo.sumFollower+`人订阅</span></div>
+	                            	</div>
+	                            	<div class="aui-card-list-user-info text-light text-overflow-fag">`+vo.desc+`</div>
+	                            </div></li>`;
+	          	  		});
+	          	  	    $("#pagefirst").append(rows);
+	          		}
+	          	},
+	          	error : function(err) {
+	          		  alert(err.message);
+	          	}
+	          });
+	    	
+	      }
+	    //取得认证专家的LIST
+	    function initpage(pageNogg,pageSizegg){
+	        //动态添加擅长分类的类型 并添加事件
+	        var prams={
+	        	openId:openId,
+	        	page:pageNogg,
+	        	rows:pageSizegg,
+	        	sort:'id'
+	        }
+	        $.ajax({
+	          	type : "GET",
+	          	url : url+"/wx/web/expert/getauthexperts",
+	          	dataType : 'json',
+	          	async: false,
+                contentType: "application/json",
+	          	data : prams,
+	          	success : function(ro) {
+                    alert(ro);
+	          		if(ro.code == 200){
+	          			//alert("成功");
+	                    pageNo = ro.page.pageNo;
+	                    lastPage = ro.page.lastPage;
+	                    var rows="";
+	          	  		$.each(ro.datas, function(index, vo){
+	          rows = rows +`<li class="bottom-border" data-href=`+vo.id+` onclick="expertInfo(this)"><div class="aui-card-list-header aui-card-list-user content-box">
+		                            <div class="aui-card-list-user-avatar user-header-img">
+			                              <i class="user-weibo"></i>
+			                               <img src=`+vo.picUrl+` class="aui-img-round">
+		                            </div>
+	                            	<div class="aui-card-list-user-name">
+	                            		<div class="aui-text-info"><span>`+vo.name+`</span></div>
+	                            		<div class="aui-font-size-14 text-light"><span style="color: #1a1a1a">`+vo.sumFollower+`人订阅</span></div>
+	                            	</div>
+	                            	<div class="aui-card-list-user-info text-light text-overflow-fag">`+vo.desc+`</div>
+	                         </div></li>`;
+	          	  		});
+	          	  		//alert(rows);
+	          	  	    $("#pagefirst").append(rows);
+                        $("#loading").hide();
+	          		}
+	          	},
+	          	error : function(err) {
+	          		  alert(err.message);
+	          	}
+	          });
+	    	
+	      }
+
+	      function expertInfo(obj) {
+             let $this=$(obj);
+             let id  = $this.attr('data-href');
+              window.location.href = "expert/expertdesc.html?openId="+openId+"&expertid="+id;
+          }
+  $(function(){
+       //初始化认证专家数据 ====不分页
+       initpage(1,pageSize);
+  });
+</script>
+</html>
